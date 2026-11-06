@@ -1,0 +1,26 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const fmt = (d: Date) => d.toISOString().slice(0, 10);
+---
+
+<BaseLayout title={post.data.title} description={post.data.description}>
+  <h1>{post.data.title}</h1>
+  <div class="meta">
+    <span class="tag">{post.data.column}</span>
+    {fmt(post.data.pubDate)}
+    {post.data.series && <span> · 系列《{post.data.series}》</span>}
+  </div>
+  <Content />
+  <p style="margin-top:48px;font-size:14px;color:var(--fg-muted)">
+    本文首发于 wangyuancun.com，转载请注明出处。
+  </p>
+</BaseLayout>

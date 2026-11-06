@@ -1,0 +1,26 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+const fmt = (d: Date) => d.toISOString().slice(0, 10);
+---
+
+<BaseLayout title="全部文章" description="按时间倒序排列的技术与生活笔记。">
+  <h1>全部文章</h1>
+  <ul class="post-list">
+    {posts.map((post) => (
+      <li>
+        <span class="date">{fmt(post.data.pubDate)}</span>
+        <a class="title" href={`/blog/${post.id}/`}>{post.data.title}</a>
+        <div class="desc">{post.data.description}</div>
+      </li>
+    ))}
+  </ul>
+</BaseLayout>
+
+<style>
+  .desc { font-size: 14px; color: var(--fg-muted); margin-top: 2px; }
+</style>

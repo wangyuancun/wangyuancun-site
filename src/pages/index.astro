@@ -1,0 +1,37 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE_TITLE, SITE_TITLE_EN, SITE_DESCRIPTION } from '../consts';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 5);
+
+const fmt = (d: Date) => d.toISOString().slice(0, 10);
+---
+
+<BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
+  <h1 class="lead">{SITE_TITLE}</h1>
+  <p class="intro">
+    一线工程师；在「橘理人」写技术怎么落地，也写人怎么撑住。
+  </p>
+  <p class="intro-en">{SITE_TITLE_EN}</p>
+
+  <h2>最近更新</h2>
+  <ul class="post-list">
+    {posts.map((post) => (
+      <li>
+        <span class="date">{fmt(post.data.pubDate)}</span>
+        <a class="title" href={`/blog/${post.id}/`}>{post.data.title}</a>
+      </li>
+    ))}
+  </ul>
+
+  <p><a href="/blog">全部文章 →</a></p>
+</BaseLayout>
+
+<style>
+  .lead { margin-bottom: 6px; }
+  .intro { font-size: 17px; margin: 0 0 6px; }
+  .intro-en { font-size: 15px; color: var(--fg-muted); margin: 0 0 32px; }
+</style>

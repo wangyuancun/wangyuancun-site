@@ -1,0 +1,25 @@
+---
+import { SITE_TITLE, SITE_DESCRIPTION, SITE_TITLE_EN } from '../consts';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = SITE_DESCRIPTION } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="canonical" href={canonical} />
+<title>{title === SITE_TITLE ? SITE_TITLE : `${title} | ${SITE_TITLE}`}</title>
+<meta name="description" content={description} />
+<meta property="og:type" content="article" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta name="author" content={SITE_TITLE} />
+<meta name="description" lang="en" content={SITE_TITLE_EN} />
+<link rel="alternate" type="application/rss+xml" title={SITE_TITLE} href="/rss.xml" />
+<link rel="icon" href="/favicon.svg" />

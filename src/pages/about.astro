@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE_TITLE, SITE_TITLE_EN, GITHUB, EMAIL, WECHAT } from '../consts';
+---
+
+<BaseLayout title="关于" description="Yuancun Wang，一线工程师；在「橘理人」写技术怎么落地，也写人怎么撑住。">
+  <h1>关于</h1>
+
+  <p>{SITE_TITLE}，一线工程师；在「{WECHAT}」写技术怎么落地，也写人怎么撑住。</p>
+  <p>{SITE_TITLE_EN}</p>
+
+  <h2>做过什么</h2>
+  <ul>
+    <li>写了 N 年生产环境的代码，主要在前端 / 后端 / 基础设施中的 <em>待补</em> 方向。</li>
+    <li>在 <a href={GITHUB}>GitHub</a> 上的开源项目里提过 bug fix 与文档改进。</li>
+    <li>每周二在博客和公众号发一篇技术笔记，持续 <em>待补</em> 周。</li>
+  </ul>
+
+  <h2>这里写什么</h2>
+  <p>
+    技术为主：线上问题复盘（踩坑现场）、源码拆解（一个库读懂）、能立刻用上的工程习惯（10 分钟工程习惯）、
+    开源协作记录（开源观察）。生活为辅：工作与生活的交叉（橘猫与工位）。
+  </p>
+
+  <h2>联系</h2>
+  <p>
+    GitHub：<a href={GITHUB}>github.com/wangyuancun</a><br />
+    公众号：{WECHAT}（中文内容主阵地）<br />
+    邮箱：{EMAIL}
+  </p>
+</BaseLayout>
