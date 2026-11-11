@@ -1,0 +1,255 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { EMAIL } from '../../consts';
+
+const title = '橘猫摸鱼钟 隐私政策';
+const description =
+  '橘猫摸鱼钟（HarmonyOS 版，包名 com.jumao.moyuclock）隐私政策：本应用为纯离线单机计时工具，不收集、不上传、不共享任何个人信息。';
+---
+
+<BaseLayout title={title} description={description}>
+  <h1>橘猫摸鱼钟 隐私政策</h1>
+
+  <p class="meta">适用应用：橘猫摸鱼钟（HarmonyOS 版） · 更新日期：2026-11-11 · 版本 v1.0</p>
+
+  <table>
+    <tbody>
+      <tr><th>适用应用</th><td>橘猫摸鱼钟（HarmonyOS 版）</td></tr>
+      <tr><th>应用包名</th><td>com.jumao.moyuclock</td></tr>
+      <tr><th>开发者</th><td>王元存（个人开发者）</td></tr>
+      <tr><th>生效日期</th><td>2026-11-11</td></tr>
+      <tr><th>更新日期</th><td>2026-11-11</td></tr>
+    </tbody>
+  </table>
+
+  <hr />
+
+  <h2>一、这份政策说什么</h2>
+  <p>
+    橘猫摸鱼钟是一个纯离线的单机计时工具，只做一件事：把"离下班还有多久"和"今天工作 / 摸鱼各用了多久"算清楚给你看。
+  </p>
+  <p>
+    为了做到这一点，它不需要知道你叫什么、在哪、用哪台设备，也不需要连网。<strong>我们不收集、不上传、不共享你的任何个人信息。</strong>
+  </p>
+  <p>下面把"我们做了什么、没做什么"逐条写清楚，你可以据此判断能不能放心用。</p>
+
+  <hr />
+
+  <h2>二、我们收集哪些信息</h2>
+  <p><strong>没有。我们不收集任何个人信息。</strong></p>
+  <p>具体地说，以下这些我们都不收集、不申请、不读取：</p>
+
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr><th>信息类型</th><th>是否收集</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>姓名、手机号、邮箱、身份证等身份信息</td><td>不收集</td></tr>
+        <tr><td>账号、密码、第三方登录</td><td>不涉及（本应用没有账号体系）</td></tr>
+        <tr><td>设备标识符（IMEI / OAID / SN / MAC 等）</td><td>不收集</td></tr>
+        <tr><td>位置信息（GPS / 基站 / Wi-Fi 定位）</td><td>不收集</td></tr>
+        <tr><td>通讯录、通话记录、短信</td><td>不读取</td></tr>
+        <tr><td>相册、文件、相机、麦克风</td><td>不读取</td></tr>
+        <tr><td>剪贴板</td><td>不读取</td></tr>
+        <tr><td>应用列表、使用行为、崩溃日志、埋点统计</td><td>不收集</td></tr>
+        <tr><td>广告标识、推送标识</td><td>不涉及（无广告、无推送）</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    你在应用里产生的只有两组数字：<strong>今天的计时秒数</strong>和<strong>你选的下班时间</strong>。它们从来没有离开过你的手机。
+  </p>
+
+  <hr />
+
+  <h2>三、数据存在哪里、存多久</h2>
+
+  <h3>3.1 存储位置</h3>
+  <p>
+    所有数据保存在<strong>你手机本机的应用沙箱</strong>内，使用 HarmonyOS 提供的 <code>preferences</code>（轻量键值存储），文件名 <code>moyu_clock_store</code>。
+  </p>
+  <p>存储的具体内容如下：</p>
+
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr><th>键名</th><th>内容</th><th>示例</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>off_work_minutes</code></td><td>你设置的下班时间（当天第几分钟）</td><td><code>1080</code>（即 18:00）</td></tr>
+        <tr><td><code>scene_index</code></td><td>当前选中的场景插画序号</td><td><code>0</code>–<code>4</code></td></tr>
+        <tr><td><code>scene_locked</code></td><td>是否锁定了当前场景</td><td><code>false</code></td></tr>
+        <tr><td><code>record_day</code></td><td>今天对应的日期</td><td><code>2026-11-11</code></td></tr>
+        <tr><td><code>record_work_sec</code></td><td>今天累计"已工作"秒数</td><td><code>68</code></td></tr>
+        <tr><td><code>record_fish_sec</code></td><td>今天累计"已摸鱼"秒数</td><td><code>0</code></td></tr>
+        <tr><td><code>history_records</code></td><td>最近的历史记录（最多 30 天）</td><td>日期 + 两个秒数</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>这些数据不含任何可以指向你个人的信息，也无法用来识别你是谁。</p>
+
+  <h3>3.2 保存期限</h3>
+  <ul>
+    <li>今天的计时数据：保留到今天 24 点，跨天后自动归档进历史；</li>
+    <li>历史记录：最多保留 <strong>30 天</strong>，超出后最早的记录自动删除；</li>
+    <li>你随时可以在「设置 → 清空今日计时」中把今天的计时归零；</li>
+    <li><strong>卸载应用会删除以上全部数据</strong>，我们这边没有任何副本可以恢复。</li>
+  </ul>
+
+  <h3>3.3 我们不做的传输</h3>
+  <p>应用运行期间不发起任何网络请求。你手机上的这些数据不会以任何形式被上传到服务器、云空间或第三方。</p>
+
+  <hr />
+
+  <h2>四、权限说明</h2>
+  <p><strong>本应用没有申请任何系统权限。</strong></p>
+  <p>
+    在工程配置 <code>entry/src/main/module.json5</code> 中，<code>module</code> 节点下<strong>不存在 <code>requestPermissions</code> 字段</strong>，即未声明任何权限，包括但不限于：
+  </p>
+  <ul>
+    <li>网络权限（<code>ohos.permission.INTERNET</code>）—— 未申请，应用无法联网；</li>
+    <li>存储 / 文件读写权限 —— 未申请，数据只写入自己的应用沙箱；</li>
+    <li>位置、相机、麦克风、通讯录、日历、通知等权限 —— 均未申请。</li>
+  </ul>
+  <p>
+    因此，安装和使用过程中<strong>不会出现任何权限弹窗</strong>。倒计时所需的时间来自系统时钟，读取当前时间不需要额外权限。
+  </p>
+  <p>
+    如果未来的版本新增了需要权限的功能，我们会先更新这份隐私政策，并在应用内以显著方式告知你、征得你的同意后再启用。
+  </p>
+
+  <hr />
+
+  <h2>五、第三方 SDK 与对外提供</h2>
+  <ul>
+    <li>
+      <strong>不接入任何第三方 SDK</strong>：工程依赖清单（<code>oh-package.json5</code>）中 <code>dependencies</code> 为空，没有统计分析、广告、推送、崩溃上报、社交登录等任何第三方组件。
+    </li>
+    <li><strong>不共享</strong>：我们不会向任何公司、组织或个人共享你的信息（因为我们根本没有你的信息）。</li>
+    <li><strong>不转让</strong>：不存在因合并、收购、破产等原因转让个人信息的情形。</li>
+    <li><strong>不公开披露</strong>：我们不对外公开任何用户数据。</li>
+  </ul>
+
+  <hr />
+
+  <h2>六、你的权利</h2>
+  <p>
+    由于我们不收集个人信息，传统意义上的"查阅、复制、更正、删除个人信息"在本应用中体现为对本地数据的完全掌控：
+  </p>
+
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr><th>你想做的事</th><th>怎么做</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>查看应用存了什么</td>
+          <td>「设置」页可看到下班时间、场景锁定状态；「统计」页可看到今日汇总与最近 7 天记录</td>
+        </tr>
+        <tr><td>修改设置</td><td>「设置 → 下班时间」可随时改；场景可在首页左右滑动或点指示点切换</td></tr>
+        <tr><td>删除今天的计时</td><td>「设置 → 清空今日计时 → 清空」</td></tr>
+        <tr><td>删除全部数据</td><td>在系统里卸载本应用，应用沙箱随卸载一并清除</td></tr>
+        <tr><td>注销账号</td><td>不适用——本应用没有账号体系，无需注册即可使用全部功能</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>如果你认为还有需要我们协助处理的数据问题，可以通过第十节的方式联系我们。</p>
+
+  <hr />
+
+  <h2>七、未成年人保护</h2>
+  <p>
+    本应用是计时工具，内容为卡通插画与数字，不含社交、支付、广告、外链，也不收集任何个人信息，适合包括未成年人在内的所有人群使用。
+  </p>
+  <ul>
+    <li>
+      我们<strong>不会明知或应知地收集儿童（不满十四周岁的未成年人）的个人信息</strong>，因为本应用不收集任何人的个人信息；
+    </li>
+    <li>如果监护人不希望未成年人继续使用，直接卸载应用即可清除全部本地数据；</li>
+    <li>若监护人认为有涉及儿童信息的问题需要处理，可通过第十节的方式联系我们，我们会在核实后 15 个工作日内答复。</li>
+  </ul>
+
+  <hr />
+
+  <h2>八、数据安全</h2>
+  <p>
+    数据只存在于应用沙箱中，受 HarmonyOS 系统沙箱机制保护，其他应用无法读取。由于不存在网络传输与服务器存储，也就不存在传输泄露、服务器被攻击导致数据外泄的风险。
+  </p>
+  <p>
+    需要提醒的是：如果你把手机交给了别人，或手机本身未设置锁屏密码，本地数据可能被他人看到。这属于设备层面的风险，建议开启系统锁屏。
+  </p>
+
+  <hr />
+
+  <h2>九、本政策的更新</h2>
+  <ul>
+    <li>当前版本：v1.0（2026-11-11 发布）</li>
+    <li>
+      若应用功能发生变化（例如未来新增需要联网或需要权限的功能），我们会同步修订本政策，更新"更新日期"，并在新版本首次启动时提示你阅读；
+    </li>
+    <li>涉及收集范围扩大的变更，会在你明确同意后才生效；</li>
+    <li>历史版本可向我们索取。</li>
+  </ul>
+
+  <hr />
+
+  <h2>十、联系我们</h2>
+  <p>对本政策或数据处理有任何疑问、意见或投诉，可通过以下方式联系：</p>
+  <ul>
+    <li><strong>邮箱</strong>：<a href={`mailto:${EMAIL}`}>{EMAIL}</a></li>
+    <li><strong>回复时限</strong>：收到后 15 个工作日内答复</li>
+  </ul>
+  <p>如果对我们的答复不满意，或认为我们的处理行为损害了你的合法权益，你可以向网信、电信、公安及工商等监管部门投诉或举报。</p>
+
+  <hr />
+
+  <h2>十一、文档信息</h2>
+
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr><th>项</th><th>内容</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>文档名称</td><td>橘猫摸鱼钟 隐私政策</td></tr>
+        <tr><td>版本</td><td>v1.0</td></tr>
+        <tr><td>生效日期</td><td>2026-11-11</td></tr>
+        <tr><td>更新日期</td><td>2026-11-11</td></tr>
+        <tr><td>适用应用版本</td><td>1.0.0（versionCode 1000000）</td></tr>
+        <tr><td>适用设备</td><td>手机、平板（HarmonyOS）</td></tr>
+        <tr><td>开发者联系邮箱</td><td>{EMAIL}</td></tr>
+      </tbody>
+    </table>
+  </div>
+</BaseLayout>
+
+<style>
+  .table-scroll {
+    overflow-x: auto;
+    margin: 16px 0;
+    -webkit-overflow-scrolling: touch;
+  }
+  hr {
+    border: 0;
+    border-top: 1px solid var(--line);
+    margin: 36px 0;
+  }
+  h3 {
+    font-size: 17px;
+    margin: 24px 0 8px;
+    font-weight: 600;
+  }
+  code {
+    background: #f6f6f4;
+    padding: 1px 4px;
+    border-radius: 3px;
+  }
+  th {
+    white-space: nowrap;
+  }
+</style>
