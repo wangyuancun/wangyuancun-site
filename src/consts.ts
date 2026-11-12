@@ -3,5 +3,5 @@ export const SITE_DESCRIPTION = 'Yuancun Wang，一线工程师；在「橘理�
 export const SITE_TITLE_EN =
   'Yuancun Wang, frontline engineer. I write as 橘理人 about how tech ships — and how the people building it hold up.';
 export const GITHUB = 'https://github.com/wangyuancun';
-export const EMAIL = 'hello@wangyuancun.com';
+export const EMAIL = 'christianwyc@foxmail.com';
 export const WECHAT = '橘理人';
