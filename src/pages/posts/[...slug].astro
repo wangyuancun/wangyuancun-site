@@ -1,0 +1,35 @@
+---
+import { getCollection } from 'astro:content';
+
+// 旧地址 /posts/<slug> 静态跳转到对应 /blog 地址，GitHub Pages 上走 meta refresh
+export async function getStaticPaths() {
+  // 这两条是上一版临时示例的旧地址，内容已删除，统一回文章列表，避免留死链
+  const legacyRedirects = [
+    { slug: 'example-layout', to: '/blog/' },
+    { slug: 'example-no-link', to: '/blog/' },
+  ];
+  const posts = await getCollection('blog');
+  return [
+    ...posts.map((post) => ({
+      params: { slug: post.id },
+      props: { to: `/blog/${post.id}/` },
+    })),
+    ...legacyRedirects.map(({ slug, to }) => ({ params: { slug }, props: { to } })),
+  ];
+}
+
+const { to } = Astro.props;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>页面已迁移</title>
+    <link rel="canonical" href={to} />
+    <meta http-equiv="refresh" content={`0; url=${to}`} />
+  </head>
+  <body>
+    <p>页面已迁移到 <a href={to}>{to}</a></p>
+  </body>
+</html>

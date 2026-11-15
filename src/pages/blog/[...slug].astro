@@ -1,9 +1,10 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { WECHAT } from '../../consts';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  const posts = await getCollection('blog');
   return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
 }
 
@@ -12,15 +13,23 @@ const { Content } = await render(post);
 const fmt = (d: Date) => d.toISOString().slice(0, 10);
 ---
 
-<BaseLayout title={post.data.title} description={post.data.description}>
+<BaseLayout title={post.data.title} description={post.data.summary}>
   <h1>{post.data.title}</h1>
   <div class="meta">
-    <span class="tag">{post.data.column}</span>
-    {fmt(post.data.pubDate)}
-    {post.data.series && <span> · 系列《{post.data.series}》</span>}
+    {post.data.tags.map((tag) => (
+      <span class="tag">{tag}</span>
+    ))}
+    {fmt(post.data.date)}
   </div>
+
   <Content />
-  <p style="margin-top:48px;font-size:14px;color:var(--fg-muted)">
-    本文首发于 wangyuancun.com，转载请注明出处。
-  </p>
+
+  {post.data.wechatUrl && (
+    <p style="margin-top:48px;font-size:14px;color:var(--fg-muted)">
+      本文首发于公众号「{WECHAT}」 · <a
+        href={post.data.wechatUrl}
+        target="_blank"
+        rel="noopener noreferrer">查看原文</a>
+    </p>
+  )}
 </BaseLayout>
