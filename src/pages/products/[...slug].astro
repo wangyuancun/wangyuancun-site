@@ -1,0 +1,112 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const products = await getCollection('products');
+  return products.map((product) => ({
+    params: { slug: product.id },
+    props: { product },
+  }));
+}
+
+const { product } = Astro.props;
+const { Content } = await render(product);
+const data = product.data;
+---
+
+<BaseLayout title={data.name} description={data.summary}>
+  <p class="back"><a href="/products/">← 产品与作品</a></p>
+
+  <h1 class="product-title">
+    {data.name}
+    {data.status && <span class="status">{data.status}</span>}
+  </h1>
+  {data.meta && <p class="meta-line">{data.meta}</p>}
+  <p class="summary">{data.summary}</p>
+
+  <Content />
+
+  {data.shots.length > 0 && (
+    <div class="shots">
+      {data.shots.map((shot) => (
+        <img src={shot.src} alt={shot.alt} width="540" height="960" loading="lazy" />
+      ))}
+    </div>
+  )}
+
+  <p class="links">
+    {data.storeLabel &&
+      (data.storeUrl ? (
+        <a href={data.storeUrl}>{data.storeLabel}</a>
+      ) : (
+        <span class="muted">{data.storeLabel}：{data.status}，暂无商店链接</span>
+      ))}
+    {data.links.map((link, index) => (
+      <>
+        {(data.storeLabel || index > 0) && <span class="sep">·</span>}
+        <a href={link.href}>{link.label}</a>
+      </>
+    ))}
+  </p>
+</BaseLayout>
+
+<style>
+  .back {
+    font-size: 14px;
+    margin: 0 0 18px;
+  }
+
+  .product-title {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+
+  .status {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: 3px;
+    padding: 0 6px;
+  }
+
+  .meta-line {
+    font-size: 13px;
+    color: var(--fg-muted);
+    margin: 0 0 12px;
+  }
+
+  .summary {
+    color: var(--fg-muted);
+  }
+
+  .shots {
+    display: flex;
+    gap: 10px;
+    margin: 18px 0 6px;
+  }
+
+  .shots img {
+    width: calc((100% - 20px) / 3);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+  }
+
+  .links {
+    font-size: 14px;
+    margin: 20px 0 0;
+  }
+
+  .links .sep {
+    color: var(--line);
+    margin: 0 8px;
+  }
+
+  .muted {
+    color: var(--fg-muted);
+  }
+</style>
