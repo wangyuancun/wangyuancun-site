@@ -1,0 +1,185 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// 有商店链接就填 storeUrl（例如 https://appgallery.huawei.com/app/Cxxxxx），
+// 留空则只显示状态文字，不会渲染成死链。
+const products = [
+  {
+    id: 'moyu-clock',
+    name: '橘猫摸鱼钟',
+    meta: 'HarmonyOS 原生应用 · 个人开发 · v1.0.1',
+    status: '审核中',
+    storeLabel: '华为应用市场',
+    storeUrl: '',
+    summary:
+      '把「还剩多久下班」做成不用打开应用也看得见的状态；摸鱼的时候，首页有一只跟着状态变化的橘猫。',
+    points: [
+      '桌面服务卡片：2×2 与 2×4 两种尺寸，在桌面显示下班倒计时与当前状态，点击回到应用。',
+      '首页陪伴形象：状态随当日工作与摸鱼时长变化，状态卡里写明这个状态由哪几项数据得出。',
+      '本周看板：最近 7 天的工作、摸鱼时长与占比，附本周汇总卡和一段本周回顾。',
+      '每日摸鱼额度：可自行调整参考额度，超出后给出提示，已有计时记录不删改。',
+      '纯本地运行：零权限、无网络，数据只存本机，卸载即删除。',
+    ],
+    shots: [
+      { src: '/images/products/moyu-clock/moyu-home.png', alt: '橘猫摸鱼钟首页：陪伴形象状态卡与下班倒计时' },
+      { src: '/images/products/moyu-clock/moyu-stats.png', alt: '橘猫摸鱼钟统计页：本周汇总与今日摸鱼额度' },
+      { src: '/images/products/moyu-clock/moyu-cards.png', alt: '桌面上的 2×2 与 2×4 两张服务卡片' },
+    ],
+    links: [{ label: '隐私政策', href: '/privacy/moyu-clock' }],
+  },
+  {
+    id: 'wechat-draft-porter',
+    name: '公众号草稿搬运工',
+    meta: 'WorkBuddy 技能 · 个人开发 · v0.1.0 已发布，v0.1.1 审核中',
+    summary:
+      '把写好的 Markdown 或带行内样式的 HTML 文章送进微信公众号草稿箱，正文图片和封面一起传；只创建草稿，不发布。',
+    points: [
+      '全流程：取 access_token → 上传正文图片 → 上传封面素材 → 新建或更新草稿。',
+      '只调草稿箱接口，不碰发布、群发和定时发表。',
+      '凭证只从本地配置文件读取，不写在命令行或代码里。',
+      '支持按标题原地更新已有草稿，不会重复新建。',
+    ],
+    links: [
+      {
+        label: 'GitHub 仓库',
+        href: 'https://github.com/wangyuancun/skills/tree/main/wechat-draft-porter',
+      },
+    ],
+  },
+  {
+    id: 'harmony-release-kit',
+    name: '鸿蒙上架与签名流程模板',
+    meta: '开源模板 · 个人维护',
+    summary:
+      '把鸿蒙应用从工程骨架、签名到上架华为应用市场的整条链路整理成可复用的模板仓：工程骨架、签名脚本、截图文案工具，加一份按真实踩坑顺序写成的流程文档。',
+    points: [
+      '不含业务代码，只保留一个可编译的最小页面，业务自己替换。',
+      '签名目录只有脚本，没有任何证书、私钥和口令。',
+      '包名、应用名、图标全部用占位符，不夹带个人信息。',
+    ],
+    links: [{ label: 'GitHub 仓库', href: 'https://github.com/wangyuancun/harmony-release-kit' }],
+  },
+];
+---
+
+<BaseLayout
+  title="产品与作品"
+  description="橘猫摸鱼钟、公众号草稿搬运工、鸿蒙上架与签名流程模板——自己做的、还在维护的东西。"
+>
+  <h1>产品与作品</h1>
+  <p class="intro">
+    自己做的、还在维护的东西。有链接的直接可点；还没上架的，就写明现在到哪一步。
+  </p>
+
+  {products.map((p) => (
+    <article class="item" id={p.id}>
+      <h2>
+        {p.name}
+        {p.status && <span class="pill">{p.status}</span>}
+      </h2>
+      <p class="meta-line">{p.meta}</p>
+      <p>{p.summary}</p>
+
+      {p.points && p.points.length > 0 && (
+        <ul class="points">
+          {p.points.map((point) => (
+            <li>{point}</li>
+          ))}
+        </ul>
+      )}
+
+      {p.shots && p.shots.length > 0 && (
+        <div class="shots">
+          {p.shots.map((shot) => (
+            <img src={shot.src} alt={shot.alt} width="540" height="960" loading="lazy" />
+          ))}
+        </div>
+      )}
+
+      <p class="links">
+        {p.storeLabel &&
+          (p.storeUrl ? (
+            <a href={p.storeUrl}>{p.storeLabel}</a>
+          ) : (
+            <span class="muted">{p.storeLabel}：{p.status}，暂无商店链接</span>
+          ))}
+        {p.links.map((link, index) => (
+          <>
+            {(p.storeLabel || index > 0) && <span class="sep">·</span>}
+            <a href={link.href}>{link.label}</a>
+          </>
+        ))}
+      </p>
+    </article>
+  ))}
+</BaseLayout>
+
+<style>
+  .intro {
+    color: var(--fg-muted);
+    margin: 0 0 8px;
+  }
+
+  .item {
+    padding: 28px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .item h2 {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin: 0 0 4px;
+  }
+
+  .pill {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: 3px;
+    padding: 0 6px;
+  }
+
+  .meta-line {
+    font-size: 13px;
+    color: var(--fg-muted);
+    margin: 0 0 10px;
+  }
+
+  .points {
+    margin: 10px 0 0;
+    padding-left: 20px;
+  }
+
+  .points li {
+    margin: 4px 0;
+  }
+
+  .shots {
+    display: flex;
+    gap: 10px;
+    margin: 18px 0 6px;
+  }
+
+  .shots img {
+    width: calc((100% - 20px) / 3);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+  }
+
+  .links {
+    font-size: 14px;
+    margin: 12px 0 0;
+  }
+
+  .links .sep {
+    color: var(--line);
+    margin: 0 8px;
+  }
+
+  .muted {
+    color: var(--fg-muted);
+  }
+</style>
