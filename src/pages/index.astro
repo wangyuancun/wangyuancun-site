@@ -1,9 +1,9 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { SITE_TITLE, SITE_TITLE_EN, SITE_DESCRIPTION } from '../consts';
+import { getPublishedPosts } from '../lib/blog';
 
-const posts = (await getCollection('blog'))
+const posts = (await getPublishedPosts())
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, 5);
 

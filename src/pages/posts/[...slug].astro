@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getPublishedPosts } from '../../lib/blog';
 
 // 旧地址 /posts/<slug> 静态跳转到对应 /blog 地址，GitHub Pages 上走 meta refresh
 export async function getStaticPaths() {
@@ -8,7 +8,8 @@ export async function getStaticPaths() {
     { slug: 'example-layout', to: '/blog/' },
     { slug: 'example-no-link', to: '/blog/' },
   ];
-  const posts = await getCollection('blog');
+  // 只给已发布的文章生成跳转页，未到点的文章不能提前暴露 slug
+  const posts = await getPublishedPosts();
   return [
     ...posts.map((post) => ({
       params: { slug: post.id },
