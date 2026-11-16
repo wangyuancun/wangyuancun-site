@@ -3,11 +3,12 @@ name: Deploy Astro site to GitHub Pages
 on:
   push:
     branches: [main]
-  # 每天 00:30 UTC = 北京时间 08:30 重新构建一次。
+  # 每天 01:00 UTC = 北京时间 09:00 重新构建一次。
   # 构建脚本只渲染 date <= 构建时刻 的文章，所以约定在 08:30 发布的文章，
   # 到点后由这一次定时重建推上线上；没到点的文章不会被渲染出来。
+  # 留到 09:00 是为了给公众号发布后补 wechatUrl 并推送留出时间。
   schedule:
-    - cron: '30 0 * * *'
+    - cron: '0 1 * * *'
   workflow_dispatch:
 
 permissions:
