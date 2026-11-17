@@ -18,8 +18,6 @@ shots:
     alt: 记录页：橘猫的这周汇总、今日记录与最近 7 天柱状图
   - src: /images/products/moyu-clock/share-catcard.webp
     alt: 把橘猫生成分享卡，带陪伴记忆与一句话
-  - src: /images/products/moyu-clock/scene-payday.webp
-    alt: 发工资场景：五幕插画场景之一，配一句当天的心情话
 ---
 
 ## 功能
