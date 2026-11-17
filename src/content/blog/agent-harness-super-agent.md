@@ -3,7 +3,7 @@ title: "Agent、Harness、Super Agent：三个词，一次讲明白"
 date: 2026-11-17T08:30:00+08:00
 summary: "谁在干活、谁给它配装备、谁替你统筹——用订一趟全家旅行的例子，把 Agent、Harness、Super Agent 三个词分清。"
 tags: ["AI", "Agent", "概念梳理"]
-wechatUrl: ""
+wechatUrl: "https://mp.weixin.qq.com/s/ybwnpYfBIi5USySpIYfdRA"
 ---
 
 ## 开场：一个小场景
