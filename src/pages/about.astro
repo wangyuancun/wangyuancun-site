@@ -1,20 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { SITE_TITLE, SITE_TITLE_EN, GITHUB, EMAIL, WECHAT } from '../consts';
+import { SITE_TITLE, GITHUB, EMAIL, WECHAT } from '../consts';
 ---
 
 <BaseLayout title="关于" description="Yuancun Wang，一线工程师；在「橘理人」写技术怎么落地，也写人怎么撑住。">
   <h1>关于</h1>
 
-  <p>{SITE_TITLE}，一线工程师；在「{WECHAT}」写技术怎么落地，也写人怎么撑住。</p>
-  <p>{SITE_TITLE_EN}</p>
-
-  <h2>做过什么</h2>
-  <ul>
-    <li>写了 N 年生产环境的代码，主要在前端 / 后端 / 基础设施中的 <em>待补</em> 方向。</li>
-    <li>在 <a href={GITHUB}>GitHub</a> 上的开源项目里提过 bug fix 与文档改进。</li>
-    <li>每周二在博客和公众号发一篇技术笔记，持续 <em>待补</em> 周。</li>
-  </ul>
+  <p>{SITE_TITLE}。写代码的，做过后端和架构，带过团队，现在做大模型。在「{WECHAT}」写技术怎么落地，也写人怎么撑住。</p>
+  <p>I'm {SITE_TITLE}. I write code — backend and architecture, teams, now large language models. At {WECHAT} I write about how tech ships, and how the people building it hold up.</p>
 
   <h2>这里写什么</h2>
   <p>
