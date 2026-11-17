@@ -6,6 +6,12 @@ status: 开源
 order: 3
 nameEn: HarmonyOS Release Kit
 summaryEn: A reusable template repo covering the whole HarmonyOS release pipeline — project skeleton, signing, app-market submission — with a checklist written in real-failure order.
+tree:
+  - "harmony-app-template"
+  - "├─ AppScope/"
+  - "├─ entry/"
+  - "├─ signing/"
+  - "└─ README.md"
 links:
   - label: GitHub 仓库
     href: https://github.com/wangyuancun/harmony-release-kit

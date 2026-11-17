@@ -6,6 +6,11 @@ status: 已发布
 order: 2
 nameEn: WeChat Draft Porter
 summaryEn: A CLI that pushes a Markdown or styled-HTML article — images and cover included — straight into a WeChat Official Account's draft box. Creates drafts only, never publishes.
+terminalTitle: wxmp.api
+terminal:
+  - "$ python3 -m wxmp.api --check"
+  - "✓ appid / appsecret ok"
+  - "✓ draft/count ok"
 links:
   - label: GitHub 仓库
     href: https://github.com/wangyuancun/skills/tree/main/wechat-draft-porter

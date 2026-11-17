@@ -41,6 +41,11 @@ const products = defineCollection({
     // 英文门厅里的一句话简介；留空则只用中文名
     nameEn: z.string().default(''),
     summaryEn: z.string().default(''),
+    // 没有截图时的封面素材：终端输出（每行一条，✓ 开头的行高亮）
+    terminalTitle: z.string().default(''),
+    terminal: z.array(z.string()).default([]),
+    // 没有截图时的封面素材：目录树（每行一条）
+    tree: z.array(z.string()).default([]),
   }),
 });
 

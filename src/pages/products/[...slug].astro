@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProductVisual from '../../components/ProductVisual.astro';
 import { OG_IMAGE } from '../../consts';
 
 export async function getStaticPaths() {
@@ -35,6 +36,14 @@ const cover = data.shots.length > 0 ? data.shots[0].src : OG_IMAGE;
     {data.meta && <p class="meta-line">{data.meta}</p>}
     <p class="summary">{data.summary}</p>
   </header>
+
+  {
+    data.shots.length === 0 && (data.terminal.length > 0 || data.tree.length > 0) && (
+      <div class="demo-block">
+        <ProductVisual product={product} />
+      </div>
+    )
+  }
 
   <article class="prose">
     <Content />
