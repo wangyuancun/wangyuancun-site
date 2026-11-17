@@ -1,0 +1,122 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getSortedPosts } from '../../lib/blog';
+import { SITE_TITLE, SITE_URL, TAGLINE_EN, NOW_EN, AVATAR, GITHUB, EMAIL } from '../../consts';
+import { fmtISODate, fmtDateEn } from '../../lib/format';
+
+const posts = (await getSortedPosts()).slice(0, 4);
+const products = (await getCollection('products')).sort((a, b) => a.data.order - b.data.order);
+
+const statusMap: Record<string, string> = {
+  审核中: 'In review',
+  已发布: 'Released',
+  开源: 'Open source',
+};
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfilePage',
+  inLanguage: 'en',
+  url: new URL('/en/', SITE_URL).href,
+  mainEntity: {
+    '@type': 'Person',
+    name: SITE_TITLE,
+    jobTitle: 'Frontline engineer',
+    url: SITE_URL,
+    sameAs: [GITHUB],
+  },
+};
+---
+
+<BaseLayout
+  title="Yuancun Wang — frontline engineer"
+  description={TAGLINE_EN}
+  lang="en"
+  type="profile"
+  altZh="/"
+  altEn="/en/"
+  active="home"
+  schema={schema}
+>
+  <div class="hero">
+    <div class="avatar">
+      <img src={AVATAR} alt="Yuancun Wang" width="104" height="104" />
+    </div>
+    <div>
+      <h1>Yuancun Wang</h1>
+      <p class="tagline">{TAGLINE_EN}</p>
+      <div class="now"><span class="dot"></span>Now: {NOW_EN}</div>
+      <div class="btns">
+        <a class="btn primary" href="/blog/">Read the blog</a>
+        <a class="btn ghost" href="#projects">See what I build</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="en-note">
+    Most of my writing is in <b>Chinese</b> — on this site and on my WeChat account <b>橘理人</b>.
+    Below is what I build, plus English summaries of recent pieces. Each one links to the full
+    original.
+  </div>
+
+  <section id="projects">
+    <div class="sec-head">
+      <h2>What I build</h2>
+    </div>
+    {
+      products.map((product) => (
+        <div class="item">
+          <h3>
+            {product.data.nameEn || product.data.name}
+            <span class="zh">{product.data.name}</span>
+            {product.data.status && (
+              <span class="status muted">
+                {statusMap[product.data.status] || product.data.status}
+              </span>
+            )}
+          </h3>
+          <p>{product.data.summaryEn || product.data.summary}</p>
+        </div>
+      ))
+    }
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>Selected writing</h2>
+      <a href="/blog/">All posts (中文) →</a>
+    </div>
+    {
+      posts.map((post) => (
+        <div class="item">
+          <div class="en-date">
+            <time datetime={fmtISODate(post.data.date)}>{fmtDateEn(post.data.date)}</time>
+          </div>
+          <h3>{post.data.titleEn || post.data.title}</h3>
+          <p>
+            {post.data.summaryEn || post.data.summary}{' '}
+            <a class="orig" href={`/blog/${post.id}/`}>
+              Read in Chinese →
+            </a>
+          </p>
+        </div>
+      ))
+    }
+  </section>
+
+  <section>
+    <div class="subscribe">
+      <div>
+        <div class="t">Contact &amp; subscribe</div>
+        <div class="d">RSS works everywhere; email reaches me fastest.</div>
+      </div>
+      <div class="links">
+        <a href={GITHUB}>GitHub</a>
+        <a href="/rss.xml">RSS</a>
+        <a href={`mailto:${EMAIL}`}>Email</a>
+        <a href="/">中文</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

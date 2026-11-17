@@ -4,17 +4,19 @@ summary: 把「还剩多久下班」做成不用打开应用也看得见的状�
 meta: HarmonyOS 原生应用 · 个人开发 · v1.0.1
 status: 审核中
 order: 1
+nameEn: Moyu Clock
+summaryEn: A HarmonyOS home-screen widget that counts down to clock-out — with an orange cat that changes mood as you slack. Zero permissions, fully offline.
 storeLabel: 华为应用市场
 storeUrl: ""
 links:
   - label: 隐私政策
     href: /privacy/moyu-clock
 shots:
-  - src: /images/products/moyu-clock/moyu-home.png
+  - src: /images/products/moyu-clock/moyu-home.webp
     alt: 橘猫摸鱼钟首页：陪伴形象状态卡与下班倒计时
-  - src: /images/products/moyu-clock/moyu-stats.png
+  - src: /images/products/moyu-clock/moyu-stats.webp
     alt: 橘猫摸鱼钟统计页：本周汇总与今日摸鱼额度
-  - src: /images/products/moyu-clock/moyu-cards.png
+  - src: /images/products/moyu-clock/moyu-cards.webp
     alt: 桌面上的 2×2 与 2×4 两张服务卡片
 ---
 

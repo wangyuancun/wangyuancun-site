@@ -1,0 +1,35 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  product: CollectionEntry<'products'>;
+}
+
+const { product } = Astro.props;
+const d = product.data;
+const shot = d.shots.length > 0 ? d.shots[0] : undefined;
+const fallbackChar = d.name.slice(0, 1);
+const fallbackSub = d.meta.split('·')[0].trim();
+---
+
+<a class="card product" href={`/products/${product.id}/`}>
+  <div class="thumb">
+    {
+      shot ? (
+        <img src={shot.src} alt={shot.alt} width="540" height="960" loading="lazy" decoding="async" />
+      ) : (
+        <div class="tile">
+          <span class="zi">{fallbackChar}</span>
+          {fallbackSub && <span class="sub">{fallbackSub}</span>}
+        </div>
+      )
+    }
+  </div>
+  <div class="card-body">
+    <h3>
+      {d.name}
+      {d.status && <span class:list={['status', { muted: d.status === '开源' || d.status === '已发布' }]}>{d.status}</span>}
+    </h3>
+    <p>{d.summary}</p>
+  </div>
+</a>

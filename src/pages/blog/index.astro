@@ -1,39 +1,28 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getPublishedPosts } from '../../lib/blog';
+import PostCard from '../../components/PostCard.astro';
+import { getSortedPosts } from '../../lib/blog';
 
-const posts = (await getPublishedPosts()).sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
-);
-const fmt = (d: Date) => d.toISOString().slice(0, 10);
+const posts = await getSortedPosts();
 ---
 
-<BaseLayout title="全部文章" description="按时间倒序排列的技术与生活笔记。">
+<BaseLayout
+  title="全部文章"
+  description="按时间倒序排列的技术与生活笔记。"
+  active="blog"
+>
   <h1>全部文章</h1>
+  <p class="lead">技术为主，生活为辅。目前 {posts.length} 篇。</p>
 
-  {posts.length === 0 ? (
-    <p class="empty">还没有文章。新文章发布后会按时间从新到旧排在这里。</p>
-  ) : (
-    <ul class="post-list">
-      {posts.map((post) => (
-        <li>
-          <span class="date">{fmt(post.data.date)}</span>
-          <a class="title" href={`/blog/${post.id}/`}>{post.data.title}</a>
-          {post.data.tags.length > 0 && (
-            <div class="tags">
-              {post.data.tags.map((tag) => (
-                <span class="tag">{tag}</span>
-              ))}
-            </div>
-          )}
-          <div class="desc">{post.data.summary}</div>
-        </li>
-      ))}
-    </ul>
-  )}
+  {
+    posts.length === 0 ? (
+      <p>还没有文章。新文章发布后会按时间从新到旧排在这里。</p>
+    ) : (
+      <div class="grid">
+        {posts.map((post) => (
+          <PostCard post={post} />
+        ))}
+      </div>
+    )
+  }
 </BaseLayout>
-
-<style>
-  .empty { color: var(--fg-muted); margin-top: 24px; }
-  .desc { font-size: 14px; color: var(--fg-muted); margin-top: 2px; }
-</style>

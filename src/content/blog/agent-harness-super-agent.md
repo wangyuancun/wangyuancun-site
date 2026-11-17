@@ -4,6 +4,10 @@ date: 2026-11-17T08:30:00+08:00
 summary: "谁在干活、谁给它配装备、谁替你统筹——用订一趟全家旅行的例子，把 Agent、Harness、Super Agent 三个词分清。"
 tags: ["AI", "Agent", "概念梳理"]
 wechatUrl: "https://mp.weixin.qq.com/s/ybwnpYfBIi5USySpIYfdRA"
+cover: /images/blog/agent-harness-super-agent/cover.png
+titleEn: "Agent, Harness, Super Agent — three words, one example"
+summaryEn: "Who does the work, who equips it, who orchestrates. One family-trip prompt separates the three words everyone conflates."
+featured: true
 ---
 
 ## 开场：一个小场景
@@ -50,7 +54,7 @@ wechatUrl: "https://mp.weixin.qq.com/s/ybwnpYfBIi5USySpIYfdRA"
 
 四样凑齐，帮工就开始干活了：听 → 想 → 做 → 记 → 看结果 → 再想下一步。这个“转圈”的过程，行业里叫 Agent Loop，也就是主循环。你可以理解成他一边干一边回头看：“成了吗？没成，换个办法。”
 
-![图1：Agent 的四样东西](/images/blog/agent-harness-super-agent/fig1-agent-four-parts.png)
+![图1：Agent 的四样东西](/images/blog/agent-harness-super-agent/fig1-agent-four-parts.webp)
 
 这就是 Agent 和聊天机器人的真正区别。聊天机器人是问一句答一句，你问“怎么订票”，它告诉你流程，然后就停了，等你再问。Agent 是你给个目标，它自己想办法——中间遇到“这个航班卖完了”，它不会回来问你“那怎么办呀”，而是自己去找下一班。
 
@@ -66,7 +70,7 @@ wechatUrl: "https://mp.weixin.qq.com/s/ybwnpYfBIi5USySpIYfdRA"
 
 先说一句总纲：第一节讲的是他得有什么本事，这一节讲的是这些本事具体靠什么落地。所以下面这几件装备，几乎都能和前面某一样东西对上——工具包对应那只“手”，工作手册对应“想好之后一步步怎么做”，记事本对应“小本子”；而检查清单和安全绳是前四样里没提过的，属于额外加上的保险。
 
-![图2：本事与装备](/images/blog/agent-harness-super-agent/fig2-skills-vs-gear.png)
+![图2：本事与装备](/images/blog/agent-harness-super-agent/fig2-skills-vs-gear.webp)
 
 顺带说一句，你可能听过另一种说法：agent ＝ 模型 ＋ harness。那是另一种切法——把帮工和装备合成一个整体看，说的是“由什么拼成”，不是“谁负责什么”。两种说法不冲突，只是这把尺子量的是零件，本文量的是分工。
 
@@ -138,7 +142,7 @@ wechatUrl: "https://mp.weixin.qq.com/s/ybwnpYfBIi5USySpIYfdRA"
 
 **谁在干活——Agent。谁在递工具、定规矩——Harness。谁在替你统筹——Super Agent。**
 
-![图3：三个词的分工](/images/blog/agent-harness-super-agent/fig3-three-words.png)
+![图3：三个词的分工](/images/blog/agent-harness-super-agent/fig3-three-words.webp)
 
 普通人判断一个 AI 到底行不行，问三句就够：
 

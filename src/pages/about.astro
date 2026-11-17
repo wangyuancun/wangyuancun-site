@@ -1,24 +1,91 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { SITE_TITLE, SITE_TITLE_EN, GITHUB, EMAIL, WECHAT } from '../consts';
+import {
+  SITE_TITLE,
+  SITE_URL,
+  TAGLINE_ZH,
+  TAGLINE_EN,
+  NOW_ZH,
+  GITHUB,
+  EMAIL,
+  WECHAT,
+  AVATAR,
+} from '../consts';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  url: new URL('/about/', SITE_URL).href,
+  inLanguage: 'zh-CN',
+};
 ---
 
-<BaseLayout title="关于" description="Yuancun Wang，一线工程师；在「橘理人」写技术怎么落地，也写人怎么撑住。">
-  <h1>关于</h1>
-
-  <p>{SITE_TITLE}，一线工程师；在「{WECHAT}」写技术怎么落地，也写人怎么撑住。</p>
-  <p>{SITE_TITLE_EN}</p>
+<BaseLayout
+  title="关于"
+  description={`${SITE_TITLE}，一线工程师。写作方向、现在在做什么、怎么联系。`}
+  active="about"
+  narrow
+  schema={schema}
+>
+  <div class="hero">
+    <div class="avatar">
+      <img src={AVATAR} alt={SITE_TITLE} width="104" height="104" />
+    </div>
+    <div>
+      <h1>关于</h1>
+      <p class="tagline">{TAGLINE_ZH}</p>
+      <p class="tagline-en">{TAGLINE_EN}</p>
+    </div>
+  </div>
 
   <h2>这里写什么</h2>
   <p>
-    技术为主：线上问题复盘（踩坑现场）、源码拆解（一个库读懂）、能立刻用上的工程习惯（10 分钟工程习惯）、
-    开源协作记录（开源观察）。生活为辅：工作与生活的交叉（橘猫与工位）。
+    技术为主：线上问题复盘（踩坑现场）、源码拆解（一个库读懂）、能立刻用上的工程习惯（10
+    分钟工程习惯）、开源协作记录（开源观察）。生活为辅：工作与生活的交叉（橘猫与工位）。
+  </p>
+  <p>
+    写法上尽量做到一件事：先给结论，再给依据。不写「某某很重要」这种没有下文的话；能给出数字、代码或复现步骤的，就给出。
+  </p>
+
+  <h2>现在</h2>
+  <p>{NOW_ZH}。</p>
+  <p>
+    十年一线开发，目前在把「AI 会怎么改变工程师这个岗位」这件事，从当事人视角写下来——既是记录，也是给自己找下一步。
   </p>
 
   <h2>联系</h2>
-  <p>
-    GitHub：<a href={GITHUB}>github.com/wangyuancun</a><br />
-    公众号：{WECHAT}（中文内容主阵地）<br />
-    邮箱：{EMAIL}
-  </p>
+  <ul class="contact">
+    <li><span>邮箱</span><a href={`mailto:${EMAIL}`}>{EMAIL}</a></li>
+    <li><span>GitHub</span><a href={GITHUB}>github.com/wangyuancun</a></li>
+    <li><span>公众号</span><span class="plain">{WECHAT}（中文内容主阵地）</span></li>
+    <li><span>订阅</span><a href="/rss.xml">RSS</a></li>
+  </ul>
 </BaseLayout>
+
+<style>
+  .contact {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 0;
+    font-size: 15px;
+  }
+  .contact li {
+    display: flex;
+    gap: 16px;
+    padding: 11px 0;
+    border-bottom: 1px solid var(--line);
+    align-items: baseline;
+  }
+  .contact li:first-child {
+    border-top: 1px solid var(--line);
+  }
+  .contact span:first-child {
+    width: 74px;
+    flex: none;
+    color: var(--fg-faint);
+    font-size: 13px;
+  }
+  .contact .plain {
+    color: var(--fg);
+  }
+</style>

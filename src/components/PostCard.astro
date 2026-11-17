@@ -1,0 +1,32 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { fmtDateZh } from '../lib/format';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const d = post.data;
+const kicker = [fmtDateZh(d.date), ...d.tags.slice(0, 2)].join(' · ');
+---
+
+<a class="card" href={`/blog/${post.id}/`}>
+  <div class="thumb">
+    {
+      d.cover ? (
+        <img src={d.cover} alt="" width="1200" height="630" loading="lazy" decoding="async" />
+      ) : (
+        <div class="tile">
+          <span class="zi">{d.title.slice(0, 1)}</span>
+          <span class="sub">橘理人</span>
+        </div>
+      )
+    }
+  </div>
+  <div class="card-body">
+    <div class="kicker">{kicker}</div>
+    <h3>{d.title}</h3>
+    <p>{d.summary}</p>
+  </div>
+</a>

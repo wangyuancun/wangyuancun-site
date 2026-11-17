@@ -4,6 +4,10 @@ date: 2026-11-15
 summary: "长上下文的成本主要花在搬运而不是计算，以及怎么省。"
 tags: ["AI", "成本", "工程习惯"]
 wechatUrl: "https://mp.weixin.qq.com/s/dNHxdae9iyfWuZKWki7NRQ"
+cover: /images/blog/long-context-cost/cover.png
+titleEn: "Most of what you pay for long context is moving costs"
+summaryEn: "Long-context bills are dominated by shuffling tokens, not thinking. Where compression actually pays off — and where it doesn't."
+featured: true
 ---
 
 先说一个很多人都有的感觉：Claude Code 越用越贵。
@@ -70,7 +74,7 @@ AI 不认字，它只认编号。你说的话在它读到之前，先得过一�
 
 纸越厚，小抄越厚，翻得越久。变慢不是它在深思，是在等搬运。像一个刀工很好的厨师，食材却放在仓库最里面，每一刀都要跑一趟。
 
-![图2：贵在搬，不在算](/images/blog/long-context-cost/fig2-cost-not-compute.png)
+![图2：贵在搬，不在算](/images/blog/long-context-cost/fig2-cost-not-compute.webp)
 
 论文算下来，同样写一百万个 token，长上下文要花的机器时间和钱，是短上下文的 3.6 到 7 倍。3.6 倍是下限，七倍是上限——上一章那个七倍，说的就是最贵的那一头。
 
@@ -100,7 +104,7 @@ AI 不认字，它只认编号。你说的话在它读到之前，先得过一�
 
 以 Opus 4.5 在修 bug 卷上的表现为例：不压缩 70.0 分，快满才收 74.8 分，每步都收 70.2 分。换成别的模型和卷子，顺序也一样：快满才收最高，每步都收最低。
 
-![图3：两种压缩时机](/images/blog/long-context-cost/fig3-when-to-compress.png)
+![图3：两种压缩时机](/images/blog/long-context-cost/fig3-when-to-compress.webp)
 
 为什么？因为快满才收，一次收进去的是完整的一段工作：刚做完的几步都还在眼前，摘出来的东西连得上。
 

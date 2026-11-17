@@ -11,6 +11,14 @@ const blog = defineCollection({
     tags: z.array(z.string()).default([]),
     // 公众号原文链接，没有就写空字符串
     wechatUrl: z.string().url().or(z.literal('')).default(''),
+    // 列表卡片与分享卡片用的封面（1200×630），没有则用字形占位
+    cover: z.string().default(''),
+    // 英文摘要：英文门厅与 RSS 使用；留空则回落到 summary
+    summaryEn: z.string().default(''),
+    // 英文标题：英文门厅使用；留空则回落到 title
+    titleEn: z.string().default(''),
+    // 是否进首页精选
+    featured: z.boolean().default(false),
   }),
 });
 
@@ -30,6 +38,9 @@ const products = defineCollection({
     storeUrl: z.string().url().or(z.literal('')).default(''),
     links: z.array(z.object({ label: z.string(), href: z.string() })).default([]),
     shots: z.array(z.object({ src: z.string(), alt: z.string() })).default([]),
+    // 英文门厅里的一句话简介；留空则只用中文名
+    nameEn: z.string().default(''),
+    summaryEn: z.string().default(''),
   }),
 });
 

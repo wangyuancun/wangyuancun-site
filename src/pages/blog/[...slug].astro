@@ -1,8 +1,9 @@
 ---
 import { render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { WECHAT } from '../../consts';
+import { WECHAT, OG_IMAGE, SITE_URL, SITE_TITLE } from '../../consts';
 import { getPublishedPosts } from '../../lib/blog';
+import { fmtDateZh, fmtISODate, readingTime } from '../../lib/format';
 
 export async function getStaticPaths() {
   // 只给已到发布时间的文章生成页面，没到点的直接 404
@@ -11,27 +12,136 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const { Content } = await render(post);
-const fmt = (d: Date) => d.toISOString().slice(0, 10);
+const { Content, headings } = await render(post);
+
+const all = (await getPublishedPosts()).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+const i = all.findIndex((p) => p.id === post.id);
+const newer = i > 0 ? all[i - 1] : undefined;
+const older = i >= 0 && i < all.length - 1 ? all[i + 1] : undefined;
+
+const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
+const mins = readingTime(post.body);
+const cover = post.data.cover || OG_IMAGE;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.data.title,
+  description: post.data.summary,
+  image: new URL(cover, SITE_URL).href,
+  datePublished: post.data.date.toISOString(),
+  inLanguage: 'zh-CN',
+  author: { '@type': 'Person', name: SITE_TITLE, url: SITE_URL },
+  publisher: { '@type': 'Person', name: SITE_TITLE, url: SITE_URL },
+  mainEntityOfPage: new URL(`/blog/${post.id}/`, SITE_URL).href,
+  keywords: post.data.tags.join(', '),
+};
 ---
 
-<BaseLayout title={post.data.title} description={post.data.summary}>
-  <h1>{post.data.title}</h1>
-  <div class="meta">
-    {post.data.tags.map((tag) => (
-      <span class="tag">{tag}</span>
-    ))}
-    {fmt(post.data.date)}
-  </div>
+<BaseLayout
+  title={post.data.title}
+  description={post.data.summary}
+  type="article"
+  image={cover}
+  publishedTime={post.data.date}
+  tags={post.data.tags}
+  narrow
+  active="blog"
+  schema={schema}
+>
+  <div class="progress" id="progress" aria-hidden="true"></div>
 
-  <Content />
+  <p class="back"><a href="/blog/">← 全部文章</a></p>
 
-  {post.data.wechatUrl && (
-    <p style="margin-top:48px;font-size:14px;color:var(--fg-muted)">
-      本文首发于公众号「{WECHAT}」 · <a
-        href={post.data.wechatUrl}
-        target="_blank"
-        rel="noopener noreferrer">查看原文</a>
-    </p>
-  )}
+  <header class="article-head">
+    <h1>{post.data.title}</h1>
+    <div class="article-meta">
+      <time datetime={fmtISODate(post.data.date)}>{fmtDateZh(post.data.date)}</time>
+      <span class="sep">·</span>
+      <span>{mins} 分钟</span>
+      {
+        post.data.tags.length > 0 && (
+          <>
+            <span class="sep">·</span>
+            <div class="tags">
+              {post.data.tags.map((tag) => (
+                <span class="tag">{tag}</span>
+              ))}
+            </div>
+          </>
+        )
+      }
+    </div>
+  </header>
+
+  {
+    toc.length >= 4 && (
+      <nav class="toc" aria-label="本文目录">
+        <div class="t">目录</div>
+        <ol>
+          {toc.map((h) => (
+            <li class={h.depth === 3 ? 'lv3' : ''}>
+              <a href={`#${h.slug}`}>{h.text}</a>
+            </li>
+          ))}
+        </ol>
+      </nav>
+    )
+  }
+
+  <article class="prose">
+    <Content />
+  </article>
+
+  {
+    post.data.wechatUrl && (
+      <p class="source-note">
+        本文首发于公众号「{WECHAT}」 ·{' '}
+        <a href={post.data.wechatUrl} target="_blank" rel="noopener noreferrer">
+          查看原文
+        </a>
+      </p>
+    )
+  }
+
+  <nav class="post-nav" aria-label="文章导航">
+    {
+      older ? (
+        <a class="prev" href={`/blog/${older.id}/`}>
+          <div class="dir">← 上一篇</div>
+          <div class="ttl">{older.data.title}</div>
+        </a>
+      ) : (
+        <span />
+      )
+    }
+    {
+      newer ? (
+        <a class="next" href={`/blog/${newer.id}/`}>
+          <div class="dir">下一篇 →</div>
+          <div class="ttl">{newer.data.title}</div>
+        </a>
+      ) : (
+        <span />
+      )
+    }
+  </nav>
+
+  <script is:inline>
+    (function () {
+      var bar = document.getElementById('progress');
+      if (!bar) return;
+      function update() {
+        var h = document.documentElement;
+        var top = h.scrollTop || document.body.scrollTop;
+        var height = h.scrollHeight - h.clientHeight;
+        bar.style.width = height > 0 ? Math.min(100, (top / height) * 100) + '%' : '0';
+      }
+      window.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update);
+      update();
+    })();
+  </script>
 </BaseLayout>

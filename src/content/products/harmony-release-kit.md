@@ -4,6 +4,8 @@ summary: 把鸿蒙应用从工程骨架、签名到上架华为应用市场的�
 meta: 开源模板 · 个人维护
 status: 开源
 order: 3
+nameEn: HarmonyOS Release Kit
+summaryEn: A reusable template repo covering the whole HarmonyOS release pipeline — project skeleton, signing, app-market submission — with a checklist written in real-failure order.
 links:
   - label: GitHub 仓库
     href: https://github.com/wangyuancun/harmony-release-kit

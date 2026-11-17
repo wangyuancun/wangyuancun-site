@@ -1,40 +1,92 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { SITE_TITLE, SITE_TITLE_EN, SITE_DESCRIPTION } from '../consts';
-import { getPublishedPosts } from '../lib/blog';
+import PostCard from '../components/PostCard.astro';
+import ProductCard from '../components/ProductCard.astro';
+import { getCollection } from 'astro:content';
+import { getFeaturedPosts } from '../lib/blog';
+import {
+  SITE_TITLE,
+  SITE_DESCRIPTION,
+  SITE_URL,
+  TAGLINE_ZH,
+  TAGLINE_EN,
+  NOW_ZH,
+  AVATAR,
+  GITHUB,
+  EMAIL,
+  WECHAT,
+} from '../consts';
 
-const posts = (await getPublishedPosts())
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0, 5);
+const posts = await getFeaturedPosts(3);
+const products = (await getCollection('products')).sort((a, b) => a.data.order - b.data.order);
+const top = products.slice(0, 3);
 
-const fmt = (d: Date) => d.toISOString().slice(0, 10);
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: SITE_TITLE,
+  url: SITE_URL,
+  inLanguage: 'zh-CN',
+};
 ---
 
-<BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
-  <h1 class="lead">{SITE_TITLE}</h1>
-  <p class="intro">
-    一线工程师；在「橘理人」写技术怎么落地，也写人怎么撑住。
-  </p>
-  <p class="intro-en">{SITE_TITLE_EN}</p>
+<BaseLayout
+  title={SITE_TITLE}
+  description={SITE_DESCRIPTION}
+  type="profile"
+  altZh="/"
+  altEn="/en/"
+  active="home"
+  schema={schema}
+>
+  <div class="hero">
+    <div class="avatar">
+      <img src={AVATAR} alt={SITE_TITLE} width="104" height="104" />
+    </div>
+    <div>
+      <h1>{SITE_TITLE}</h1>
+      <p class="tagline">{TAGLINE_ZH}</p>
+      <p class="tagline-en">{TAGLINE_EN}</p>
+      <div class="now"><span class="dot"></span>现在：{NOW_ZH}</div>
+      <div class="btns">
+        <a class="btn primary" href="/blog/">读文章</a>
+        <a class="btn ghost" href="/products/">看作品</a>
+      </div>
+    </div>
+  </div>
 
-  <h2>最近更新</h2>
-  <ul class="post-list">
-    {posts.map((post) => (
-      <li>
-        <span class="date">{fmt(post.data.date)}</span>
-        <a class="title" href={`/blog/${post.id}/`}>{post.data.title}</a>
-      </li>
-    ))}
-  </ul>
+  <section>
+    <div class="sec-head">
+      <h2>精选文章</h2>
+      <a href="/blog/">全部 →</a>
+    </div>
+    <div class="grid">
+      {posts.map((post) => <PostCard post={post} />)}
+    </div>
+  </section>
 
-  <p><a href="/blog">全部文章 →</a></p>
+  <section>
+    <div class="sec-head">
+      <h2>产品与作品</h2>
+      <a href="/products/">全部 →</a>
+    </div>
+    <div class="grid">
+      {top.map((product) => <ProductCard product={product} />)}
+    </div>
+  </section>
 
-  <h2>产品与作品</h2>
-  <p><a href="/products">橘猫摸鱼钟、公众号草稿搬运工等 →</a></p>
+  <section>
+    <div class="subscribe">
+      <div>
+        <div class="t">订阅与联系</div>
+        <div class="d">新文章可订阅，也欢迎直接来信。中文主阵地在公众号「{WECHAT}」。</div>
+      </div>
+      <div class="links">
+        <a href={GITHUB}>GitHub</a>
+        <a href="/rss.xml">RSS</a>
+        <a href={`mailto:${EMAIL}`}>Email</a>
+        <a href="/en/">English</a>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
-
-<style>
-  .lead { margin-bottom: 6px; }
-  .intro { font-size: 17px; margin: 0 0 6px; }
-  .intro-en { font-size: 15px; color: var(--fg-muted); margin: 0 0 32px; }
-</style>

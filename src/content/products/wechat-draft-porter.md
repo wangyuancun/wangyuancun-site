@@ -4,6 +4,8 @@ summary: 把写好的 Markdown 或带行内样式的 HTML 文章送进微信公�
 meta: WorkBuddy 技能 · 个人开发 · v0.1.0 已发布，v0.1.1 审核中
 status: 已发布
 order: 2
+nameEn: WeChat Draft Porter
+summaryEn: A CLI that pushes a Markdown or styled-HTML article — images and cover included — straight into a WeChat Official Account's draft box. Creates drafts only, never publishes.
 links:
   - label: GitHub 仓库
     href: https://github.com/wangyuancun/skills/tree/main/wechat-draft-porter

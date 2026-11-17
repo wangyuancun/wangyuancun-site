@@ -4,6 +4,10 @@ date: 2026-11-10
 summary: "把内容放到自己的域名上，不是为了好看，是为了让每一篇文章都能被找到、被引用、被积累。"
 tags: ["生活"]
 wechatUrl: ""
+cover: /images/blog/why-i-moved-my-blog/cover.png
+titleEn: "Why I moved my blog to my own domain"
+summaryEn: "Not for looks. So that every post can be found, cited, and accumulated."
+featured: false
 ---
 
 写了几年公众号，读者是涨了一点，但心里一直有个不踏实的地方：**这些文章不完全属于我。**
