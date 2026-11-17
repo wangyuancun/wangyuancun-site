@@ -6,7 +6,7 @@ tags: ["AI", "Agent", "概念梳理"]
 wechatUrl: "https://mp.weixin.qq.com/s/ybwnpYfBIi5USySpIYfdRA"
 cover: /images/blog/agent-harness-super-agent/cover.png
 titleEn: "Agent, Harness, Super Agent — three words, one example"
-summaryEn: "Who does the work, who equips it, who orchestrates. One family-trip prompt separates the three words everyone conflates."
+summaryEn: "Who does the work, who equips it, who orchestrates. A single family-trip prompt is enough to tell the three words apart."
 featured: true
 ---
 

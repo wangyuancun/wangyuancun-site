@@ -9,7 +9,7 @@ export const TAGLINE_EN =
 
 /** 首页「现在」状态行：手改这里即可，不用动模板 */
 export const NOW_ZH = '橘猫摸鱼钟 v1.0.1 审核中 · 下一篇长文在写';
-export const NOW_EN = 'Shipping Moyu Clock v1.0.1 (in app-store review) · next long-form piece in progress';
+export const NOW_EN = 'Moyu Clock v1.0.1 in review with Huawei AppGallery · next long-form piece in progress';
 
 export const GITHUB = 'https://github.com/wangyuancun';
 export const EMAIL = 'christianwyc@foxmail.com';

@@ -5,7 +5,7 @@ summary: "长上下文的成本主要花在搬运而不是计算，以及怎么�
 tags: ["AI", "成本", "工程习惯"]
 wechatUrl: "https://mp.weixin.qq.com/s/dNHxdae9iyfWuZKWki7NRQ"
 cover: /images/blog/long-context-cost/cover.png
-titleEn: "Most of what you pay for long context is moving costs"
+titleEn: "Most of your long-context bill is moving fees, not thinking"
 summaryEn: "Long-context bills are dominated by shuffling tokens, not thinking. Where compression actually pays off — and where it doesn't."
 featured: true
 ---
