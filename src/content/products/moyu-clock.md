@@ -1,32 +1,37 @@
 ---
-name: 橘猫摸鱼钟
-summary: 把「还剩多久下班」做成不用打开应用也看得见的状态；摸鱼的时候，首页有一只跟着状态变化的橘猫。
-meta: HarmonyOS 原生应用 · 个人开发 · v1.0.1
+name: 橘猫发呆日记
+summary: 一只趴在工位上的橘猫，加一块只干一件事的表：告诉你今天还要熬多久。专注的时间会变成猫的样子。
+meta: HarmonyOS 原生应用 · 个人开发 · v1.0.2
 status: 审核中
 order: 1
-nameEn: Moyu Clock
-summaryEn: A HarmonyOS home-screen widget that counts down to clock-out — with an orange cat that changes mood as you slack. Zero permissions, fully offline.
+nameEn: Cat Daydream
+summaryEn: A HarmonyOS countdown to clock-out, watched over by an orange cat that grows with every focused hour. Zero permissions, fully offline.
 storeLabel: 华为应用市场
 storeUrl: ""
 links:
   - label: 隐私政策
     href: /privacy/moyu-clock
 shots:
-  - src: /images/products/moyu-clock/moyu-home.webp
-    alt: 橘猫摸鱼钟首页：陪伴形象状态卡与下班倒计时
-  - src: /images/products/moyu-clock/moyu-stats.webp
-    alt: 橘猫摸鱼钟统计页：本周汇总与今日摸鱼额度
-  - src: /images/products/moyu-clock/moyu-cards.webp
-    alt: 桌面上的 2×2 与 2×4 两张服务卡片
+  - src: /images/products/moyu-clock/home-countdown.webp
+    alt: 橘猫发呆日记首页：橘猫陪伴卡与下班倒计时，专注计时进行中
+  - src: /images/products/moyu-clock/week-record.webp
+    alt: 记录页：橘猫的这周汇总、今日记录与最近 7 天柱状图
+  - src: /images/products/moyu-clock/share-catcard.webp
+    alt: 把橘猫生成分享卡，带陪伴记忆与一句话
+  - src: /images/products/moyu-clock/scene-payday.webp
+    alt: 发工资场景：五幕插画场景之一，配一句当天的心情话
 ---
 
 ## 功能
 
-- 桌面服务卡片：2×2 与 2×4 两种尺寸，在桌面显示下班倒计时与当前状态，点击回到应用。
-- 首页陪伴形象：状态随当日工作与摸鱼时长变化，状态卡里写明这个状态由哪几项数据得出。
-- 本周看板：最近 7 天的工作、摸鱼时长与占比，附本周汇总卡和一段本周回顾。
-- 每日摸鱼额度：可自行调整参考额度，超出后给出提示，已有计时记录不删改。
+- 一眼看到还剩多久下班：打开就是倒计时，大字号一秒一跳；下班时间可自行设置，过了下班点自动变成「已经下班 +几小时」。
+- 头顶那只猫会跟着专注长大：「刚认识的奶猫 → 熟了的橘猫 → 离不开了的橘猪」三档形态，只看你累计专注了多久，不靠运气、不靠充值，数学上不封顶。
+- 专注与歇会儿分别计时：两者互斥，点了开始就计时；桌面服务卡片上也能直接开始或暂停，不用打开应用。
+- 这周的时间去哪了：记录页顶部是「橘猫的这周」，最近 7 天的专注与歇会儿时长、一张汇总卡加一段本周回顾，下方是今日记录与柱状图。
+- 做完了它可能说一句话：一段专注结束，橘猫可能冒出一句猫言，说完就忘，不存档、不上传、不影响任何数值。
+- 五幕场景随手换：上班、加班、咖啡、周末、发工资，五张插画随时切换。
+- 还能把猫分享出去：点首页的橘猫，生成一张带陪伴记忆和一句话的猫卡，走系统分享面板发给朋友。
 
 ## 数据
 
-零权限、无网络，所有记录只存在本机，卸载即删除。
+零权限、无网络、不需要注册登录，所有记录只存在本机，卸载即删除。零广告、零内购。
