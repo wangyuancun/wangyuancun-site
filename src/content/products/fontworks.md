@@ -13,6 +13,9 @@ terminal:
   - "✓ TTF / OTF / WOFF2"
   - "✓ 可变字体"
   - "✓ 全程离线，无网络请求"
+links:
+  - label: GitHub 仓库
+    href: https://github.com/wangyuancun/skills/tree/main/fontworks
 ---
 
 ## 能做什么
