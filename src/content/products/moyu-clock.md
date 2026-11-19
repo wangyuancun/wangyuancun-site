@@ -2,12 +2,12 @@
 name: 橘猫发呆日记
 summary: 一只趴在工位上的橘猫，加一块只干一件事的表：告诉你今天还要熬多久。专注的时间会变成猫的样子。
 meta: HarmonyOS 原生应用 · 个人开发 · v1.0.2
-status: 审核中
+status: 已发布
 order: 1
 nameEn: Cat Daydream
 summaryEn: A HarmonyOS countdown to clock-out, watched over by an orange cat that grows with every focused hour. Zero permissions, fully offline.
 storeLabel: 华为应用市场
-storeUrl: ""
+storeUrl: https://appgallery.huawei.com/app/C6917621581060350088
 links:
   - label: 隐私政策
     href: /privacy/moyu-clock

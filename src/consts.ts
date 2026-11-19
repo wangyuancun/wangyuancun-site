@@ -8,8 +8,8 @@ export const TAGLINE_EN =
   'Frontline engineer in Shanghai. I write about how tech ships — and how the people building it hold up.';
 
 /** 首页「现在」状态行：手改这里即可，不用动模板 */
-export const NOW_ZH = '橘猫发呆日记 v1.0.2 审核中 · 下一篇长文在写';
-export const NOW_EN = 'Cat Daydream v1.0.2 in review with Huawei AppGallery · next long-form piece in progress';
+export const NOW_ZH = '橘猫发呆日记 v1.0.2 已上架华为应用市场 · 下一篇长文在写';
+export const NOW_EN = 'Cat Daydream v1.0.2 is live on Huawei AppGallery · next long-form piece in progress';
 
 export const GITHUB = 'https://github.com/wangyuancun';
 export const EMAIL = 'christianwyc@foxmail.com';

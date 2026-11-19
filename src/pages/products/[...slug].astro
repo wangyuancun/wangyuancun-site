@@ -70,7 +70,9 @@ const cover = data.shots.length > 0 ? data.shots[0].src : OG_IMAGE;
     {
       data.storeLabel &&
         (data.storeUrl ? (
-          <a href={data.storeUrl}>{data.storeLabel}</a>
+          <a href={data.storeUrl} target="_blank" rel="noopener noreferrer">
+            {data.storeLabel}
+          </a>
         ) : (
           <span class="muted">
             {data.storeLabel}：{data.status}，暂无商店链接
