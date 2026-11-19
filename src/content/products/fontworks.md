@@ -1,7 +1,7 @@
 ---
 name: 字体工坊 FontWorks
 summary: 在本地把字体工程构建成 TTF、OTF、可变字体和 WOFF2，也能在已有 OFL 字体上做 remix；内置 3000 常用字中文子集，全程离线。
-meta: WorkBuddy 技能 · 内容创作 / 工具 - 办公 · 免费 · v1.0.0 已发布
+meta: WorkBuddy 技能 · 内容创作 / 工具 - 办公 · 免费 · v1.0.0
 status: 已发布
 order: 4
 nameEn: FontWorks
