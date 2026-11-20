@@ -18,8 +18,8 @@ const kicker = [fmtDateZh(d.date), ...d.tags.slice(0, 2)].join(' · ');
         <img src={d.cover} alt="" width="1200" height="630" loading="lazy" decoding="async" />
       ) : (
         <div class="tile">
-          <span class="zi">{d.title.slice(0, 1)}</span>
-          <span class="sub">橘理人</span>
+          <div class="tile-title">{d.title}</div>
+          <div class="tile-sub">橘理人</div>
         </div>
       )
     }

@@ -359,31 +359,46 @@ html[data-theme='dark'] .card:hover { box-shadow: 0 6px 22px rgba(0, 0, 0, 0.35)
   height: auto;
 }
 
+/* 没配封面时的兜底：沿用文章封面的米白底 + 橙顶条 + 宋体标题，
+   保证有无封面的卡片在列表里观感一致（固定浅色，与封面图一致） */
 .tile {
   width: 100%;
   height: 100%;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 16px 14px 10px;
+  background: #fbfaf8;
   position: relative;
 }
-.tile .zi {
-  font-family: var(--serif);
-  font-size: 42px;
-  font-weight: 700;
-  color: var(--accent);
-  opacity: 0.9;
-  line-height: 1;
-}
-.tile .sub {
+.tile::before {
+  content: '';
   position: absolute;
-  bottom: 9px;
+  top: 0;
   left: 0;
   right: 0;
-  text-align: center;
-  font-size: 11px;
+  height: 5px;
+  background: #c2571a;
+}
+.tile .tile-title {
+  font-family: var(--serif);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: #1b1d1f;
+  padding-top: 4px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+.tile .tile-sub {
+  font-family: var(--mono);
+  font-size: 9px;
   letter-spacing: 1.5px;
-  color: var(--fg-faint);
+  color: #9a978f;
 }
 
 .card-body { padding: 14px 16px 16px; display: flex; flex-direction: column; flex: 1; }

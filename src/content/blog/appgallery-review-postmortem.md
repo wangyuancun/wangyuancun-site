@@ -4,7 +4,7 @@ date: 2026-11-19
 summary: "1.0.1 被华为应用市场驳回，理由只有一条——「简单计时类，与已有应用类似」。这不是 bug，是主观判定。记录我怎么读懂那条理由、把产品重做一遍、最后过审的全过程。"
 tags: ["HarmonyOS", "应用市场", "独立开发", "复盘"]
 wechatUrl: "https://mp.weixin.qq.com/s/HRXFuSM4nj-GjhKXXdA11w"
-cover: ""
+cover: /images/blog/appgallery-review-postmortem/cover.png
 titleEn: "Rejected for Being Too Ordinary: A HarmonyOS App Review Postmortem"
 summaryEn: "Huawei rejected v1.0.1 with one line: a simple timer, too similar to existing apps. Here is how I read between the lines, rebuilt the product, and got approved."
 featured: false
