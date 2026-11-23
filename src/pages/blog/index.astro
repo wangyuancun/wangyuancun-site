@@ -2,8 +2,14 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostCard from '../../components/PostCard.astro';
 import { getSortedPosts } from '../../lib/blog';
+import { seriesMeta } from '../../lib/series';
 
 const posts = await getSortedPosts();
+
+// 顶部系列入口：只指向已确认的系列，且该系列确有已发布文章时才显示
+const seriesId = 'agentscope';
+const seriesName = seriesMeta(seriesId).name;
+const seriesCount = posts.filter((post) => post.data.series === seriesId).length;
 ---
 
 <BaseLayout
@@ -11,6 +17,18 @@ const posts = await getSortedPosts();
   description="按时间倒序排列的技术与生活笔记。"
   active="blog"
 >
+  {
+    seriesCount > 0 && (
+      <p class="series-entry">
+        <a href={`/blog/series/${seriesId}/`}>
+          <span class="lab">系列</span>
+          <span class="t">{seriesName}</span>
+          <span class="d">已发布 {seriesCount} 篇 →</span>
+        </a>
+      </p>
+    )
+  }
+
   <h1>全部文章</h1>
   <p class="lead">技术为主，生活为辅。目前 {posts.length} 篇。</p>
 
@@ -26,3 +44,32 @@ const posts = await getSortedPosts();
     )
   }
 </BaseLayout>
+
+<style>
+  .series-entry { margin: 26px 0 0; }
+  .series-entry a {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding-left: 11px;
+    border-left: 2px solid var(--accent);
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: var(--fg-muted);
+  }
+  .series-entry .lab {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--fg-faint);
+  }
+  .series-entry .t {
+    font-family: var(--serif);
+    font-size: 14.5px;
+    font-weight: 700;
+    color: var(--fg);
+    transition: color 0.15s ease;
+  }
+  .series-entry a:hover .t { color: var(--accent); }
+</style>

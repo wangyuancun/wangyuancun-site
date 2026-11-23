@@ -19,6 +19,10 @@ const blog = defineCollection({
     titleEn: z.string().default(''),
     // 是否进首页精选
     featured: z.boolean().default(false),
+    // 所属系列标识，如 agentscope；不写则不属于任何系列
+    series: z.string().optional(),
+    // 系列内排序用的序号，小的在前；缺省则排在该系列已有序号的文章之后
+    seriesOrder: z.number().optional(),
   }),
 });
 

@@ -3,6 +3,7 @@ import { render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { WECHAT, OG_IMAGE, SITE_URL, SITE_TITLE } from '../../consts';
 import { getPublishedPosts } from '../../lib/blog';
+import { getSeriesPosts, seriesMeta } from '../../lib/series';
 import { fmtDateZh, fmtISODate, readingTime } from '../../lib/format';
 
 export async function getStaticPaths() {
@@ -20,6 +21,15 @@ const all = (await getPublishedPosts()).sort(
 const i = all.findIndex((p) => p.id === post.id);
 const newer = i > 0 ? all[i - 1] : undefined;
 const older = i >= 0 && i < all.length - 1 ? all[i + 1] : undefined;
+
+// 系列条：同一系列内已发布文章，顺序与系列目录页一致；不属于系列则不渲染
+const seriesId = post.data.series;
+const seriesPosts = seriesId ? await getSeriesPosts(seriesId) : [];
+const seriesPos = seriesPosts.findIndex((p) => p.id === post.id);
+const seriesPrev = seriesPos > 0 ? seriesPosts[seriesPos - 1] : undefined;
+const seriesNext =
+  seriesPos >= 0 && seriesPos < seriesPosts.length - 1 ? seriesPosts[seriesPos + 1] : undefined;
+const series = seriesId && seriesPosts.length > 0 ? seriesMeta(seriesId) : undefined;
 
 const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 const mins = readingTime(post.body);
@@ -54,6 +64,37 @@ const schema = {
   <div class="progress" id="progress" aria-hidden="true"></div>
 
   <p class="back"><a href="/blog/">← 全部文章</a></p>
+
+  {
+    series && (
+      <nav class="series-strip" aria-label="系列导航">
+        <div class="ss-left">
+          <a class="ss-mark" href={`/blog/series/${seriesId}/`}>
+            {series.name}
+          </a>
+          <span class="ss-pos">第 {seriesPos + 1} 篇</span>
+        </div>
+        {
+          (seriesPrev || seriesNext) && (
+            <div class="ss-jump">
+              {seriesPrev && (
+                <a class="prev" href={`/blog/${seriesPrev.id}/`}>
+                  <span class="dir">← 上一篇</span>
+                  <span class="ttl">{seriesPrev.data.title}</span>
+                </a>
+              )}
+              {seriesNext && (
+                <a class="next" href={`/blog/${seriesNext.id}/`}>
+                  <span class="dir">下一篇 →</span>
+                  <span class="ttl">{seriesNext.data.title}</span>
+                </a>
+              )}
+            </div>
+          )
+        }
+      </nav>
+    )
+  }
 
   <header class="article-head">
     <h1>{post.data.title}</h1>

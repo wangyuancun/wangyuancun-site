@@ -1,0 +1,173 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getPublishedPosts } from '../../../lib/blog';
+import { SERIES, seriesMeta, sortSeriesPosts } from '../../../lib/series';
+import { fmtDateZh, fmtISODate } from '../../../lib/format';
+
+export async function getStaticPaths() {
+  // 只按已发布文章聚合；表里登记但还没文章的系列也出页，用于显示空态
+  const posts = (await getPublishedPosts()).filter((post) => post.data.series);
+  const ids = new Set<string>(Object.keys(SERIES));
+  for (const post of posts) ids.add(post.data.series as string);
+
+  return [...ids].map((series) => ({
+    params: { series },
+    props: { posts: sortSeriesPosts(posts.filter((post) => post.data.series === series)) },
+  }));
+}
+
+interface Props {
+  posts: Awaited<ReturnType<typeof getPublishedPosts>>;
+}
+
+const { series } = Astro.params;
+const { posts } = Astro.props;
+const meta = seriesMeta(series as string);
+const latest = posts.reduce<Date | undefined>(
+  (acc, post) => (!acc || post.data.date.getTime() > acc.getTime() ? post.data.date : acc),
+  undefined
+);
+---
+
+<BaseLayout
+  title={meta.name}
+  description={meta.intro || `${meta.name}系列文章目录。`}
+  active="blog"
+>
+  <p class="back"><a href="/blog/">← 全部文章</a></p>
+
+  <header class="series-head">
+    <h1>{meta.name}</h1>
+    {meta.intro && <p class="lead">{meta.intro}</p>}
+    {
+      posts.length > 0 && (
+        <p class="series-meta">
+          <span>已发布 {posts.length} 篇</span>
+          <span class="sep">·</span>
+          <span>更新于 {fmtDateZh(latest as Date)}</span>
+        </p>
+      )
+    }
+  </header>
+
+  {
+    posts.length === 0 ? (
+      <p class="series-empty">第一篇正在写，发布之后会出现在这里。</p>
+    ) : (
+      <ol class="series-list">
+        {posts.map((post, i) => (
+          <li>
+            <a class="row" href={`/blog/${post.id}/`}>
+              <span class="no">{String(i + 1).padStart(2, '0')}</span>
+              <div class="body">
+                <h2>{post.data.title}</h2>
+                <p>{post.data.summary}</p>
+              </div>
+              <div class="side">
+                <time datetime={fmtISODate(post.data.date)}>{fmtDateZh(post.data.date)}</time>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ol>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .series-head { margin-top: 30px; }
+  .series-head h1 { margin: 0 0 12px; }
+  .series-head .lead { font-size: 17px; line-height: 1.75; max-width: 33em; margin: 0 0 14px; }
+
+  .series-meta {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-size: 13px;
+    color: var(--fg-faint);
+    font-variant-numeric: tabular-nums;
+    margin: 0;
+  }
+  .series-meta .sep { color: var(--line-strong); }
+
+  .series-list {
+    list-style: none;
+    margin: 34px 0 0;
+    padding: 0;
+    border-top: 1px solid var(--line-strong);
+  }
+  .series-list li { border-bottom: 1px solid var(--line); }
+
+  .series-list a.row {
+    display: grid;
+    grid-template-columns: 56px minmax(0, 1fr) 132px;
+    gap: 20px;
+    align-items: start;
+    padding: 24px 8px 22px;
+    color: inherit;
+    transition: background-color 0.15s ease;
+  }
+  .series-list a.row:hover { background: var(--accent-tint); color: inherit; }
+
+  .no {
+    font-family: var(--serif);
+    font-size: 38px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.5px;
+    color: var(--line-strong);
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+  .series-list a.row:hover .no { color: var(--accent); }
+
+  .body h2 {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.45;
+    letter-spacing: 0.1px;
+    margin: 0 0 6px;
+    transition: color 0.15s ease;
+  }
+  .series-list a.row:hover .body h2 { color: var(--accent); }
+  .body p {
+    margin: 0;
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: var(--fg-muted);
+    max-width: 34em;
+  }
+
+  .side { text-align: right; padding-top: 5px; }
+  .side time {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--fg-faint);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .series-empty {
+    margin: 40px 0 0;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+    font-size: 14.5px;
+    color: var(--fg-muted);
+  }
+
+  @media (max-width: 700px) {
+    .series-list a.row {
+      grid-template-columns: 44px minmax(0, 1fr);
+      gap: 14px;
+      padding: 20px 4px 18px;
+    }
+    .no { font-size: 29px; }
+    .body h2 { font-size: 18px; }
+    .side {
+      grid-column: 2;
+      text-align: left;
+      padding-top: 0;
+    }
+  }
+</style>

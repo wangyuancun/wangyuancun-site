@@ -581,6 +581,58 @@ html[data-theme='dark'] .prose :not(pre) > code { color: var(--accent); }
 }
 .article-meta .sep { color: var(--line-strong); }
 
+/* 系列条：文章顶部，标明所属系列与前后篇 */
+
+.series-strip {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px 24px;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--line-strong);
+  border-bottom: 1px solid var(--line-strong);
+  padding: 11px 0 12px;
+  margin: 0 0 0;
+}
+.ss-left { display: flex; align-items: baseline; gap: 9px; flex-wrap: wrap; }
+.ss-mark {
+  font-family: var(--serif);
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--fg);
+}
+.ss-mark:hover { color: var(--accent); }
+.ss-pos {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--fg-faint);
+  font-variant-numeric: tabular-nums;
+}
+.ss-pos::before { content: '·'; margin-right: 9px; color: var(--line-strong); }
+
+.ss-jump { display: flex; gap: 14px; min-width: 0; }
+.ss-jump a {
+  display: flex;
+  flex-direction: column;
+  max-width: 176px;
+  min-width: 0;
+  font-size: 12.5px;
+  letter-spacing: 0.02em;
+  color: var(--fg-muted);
+  line-height: 1.55;
+}
+.ss-jump a:hover { color: var(--accent); }
+.ss-jump a:hover .dir { color: var(--accent); }
+.ss-jump .dir { font-size: 10.5px; letter-spacing: 0.08em; color: var(--fg-faint); }
+.ss-jump .ttl { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ss-jump .next {
+  text-align: right;
+  align-items: flex-end;
+  border-left: 1px solid var(--line);
+  padding-left: 14px;
+}
+
 .toc {
   border: 1px solid var(--line);
   border-radius: var(--radius);
@@ -719,6 +771,8 @@ html[data-theme='dark'] .prose :not(pre) > code { color: var(--accent); }
   .list .date { width: 78px; font-size: 12.5px; }
   .post-nav { grid-template-columns: 1fr; }
   .post-nav .next { grid-column: 1; text-align: left; }
+  .ss-jump { width: 100%; }
+  .ss-jump a { max-width: 45%; flex: 1; }
   header.site { padding-top: 18px; }
   header.site nav { gap: 14px; font-size: 13.5px; }
   h2 { font-size: 21px; }
