@@ -1,0 +1,268 @@
+---
+import {
+  ANNOUNCEMENT_LABELS,
+  announcementKey,
+  type Announcement,
+} from '../data/announcements';
+
+interface Props {
+  announcement: Announcement;
+}
+
+const { announcement } = Astro.props;
+const label = announcement.label ?? ANNOUNCEMENT_LABELS[announcement.type];
+---
+
+<aside
+  class="announce"
+  id="announce"
+  role="region"
+  aria-label="站点公告"
+  data-start={announcement.start}
+  data-end={announcement.end}
+>
+  <div class="announce-inner">
+    <span class="an-tag">{label}</span>
+    <a class="an-body" href={announcement.href} data-announce-link>
+      <span class="an-name">{announcement.title}</span>
+      {announcement.note && <span class="an-text">{announcement.note}</span>}
+    </a>
+    <a
+      class="an-cta"
+      href={announcement.href}
+      aria-label={`查看${announcement.title}`}
+      data-announce-link
+    >
+      <span class="an-cta-label">查看</span>
+      <span class="an-cta-arrow" aria-hidden="true">→</span>
+    </a>
+    <button class="an-close" type="button" aria-label="关闭公告" data-announce-close>×</button>
+  </div>
+</aside>
+
+<script is:inline define:vars={{ key: announcementKey(announcement) }}>
+  (function () {
+    var bar = document.getElementById('announce');
+    if (!bar) return;
+
+    var root = document.documentElement;
+    var DAY = 24 * 60 * 60 * 1000;
+    var DISMISS_DAYS = 7;
+
+    function today() {
+      var d = new Date();
+      return (
+        d.getFullYear() +
+        '-' +
+        String(d.getMonth() + 1).padStart(2, '0') +
+        '-' +
+        String(d.getDate()).padStart(2, '0')
+      );
+    }
+
+    function isDismissed() {
+      try {
+        return Number(localStorage.getItem(key) || 0) > Date.now();
+      } catch (e) {
+        return false;
+      }
+    }
+
+    // 运行时按 DOM 上的 start / end 再判一次：站点不重建也能按时下线
+    function sync() {
+      if (isDismissed()) {
+        root.dataset.announce = 'off';
+        return;
+      }
+      var t = today();
+      var start = bar.getAttribute('data-start') || '';
+      var end = bar.getAttribute('data-end') || '';
+      root.dataset.announce = t >= start && t <= end ? 'on' : 'off';
+    }
+
+    function dismiss() {
+      try {
+        localStorage.setItem(key, String(Date.now() + DISMISS_DAYS * DAY));
+      } catch (e) {}
+      root.dataset.announce = 'off';
+    }
+
+    var close = bar.querySelector('[data-announce-close]');
+    if (close) close.addEventListener('click', dismiss);
+
+    // 点链接也算「已读」，7 天内不再打扰
+    var links = bar.querySelectorAll('[data-announce-link]');
+    for (var i = 0; i < links.length; i++) {
+      links[i].addEventListener('click', dismiss);
+    }
+
+    sync();
+  })();
+</script>
+
+<style>
+  .announce {
+    background: var(--elev);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    animation: announce-in 240ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  }
+
+  /* 首屏内联脚本在 <html> 上写 off，渲染前就藏起来，避免闪一下再消失 */
+  :global(html[data-announce='off']) .announce {
+    display: none;
+  }
+
+  .announce-inner {
+    max-width: var(--w);
+    margin: 0 auto;
+    height: 44px;
+    padding-right: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .an-tag {
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    flex: none;
+    padding: 0 14px;
+    background: var(--accent-strong);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+  :global(html[data-theme='dark']) .an-tag {
+    color: #15171b;
+  }
+
+  .an-body {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    font-size: 14px;
+    line-height: 1;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .an-name {
+    flex: 0 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 600;
+    color: var(--fg);
+  }
+  .an-text {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--fg-muted);
+  }
+  .an-body:hover .an-name {
+    color: var(--accent-strong);
+  }
+
+  .an-cta {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 30px;
+    padding: 0 12px;
+    border-radius: 6px;
+    background: var(--fg);
+    color: var(--bg);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1;
+  }
+  .an-cta:hover {
+    background: var(--accent-strong);
+    color: var(--bg);
+  }
+  .an-cta-arrow {
+    font-size: 14px;
+    line-height: 1;
+  }
+
+  .an-close {
+    flex: none;
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    background: none;
+    color: var(--fg-faint);
+    font: inherit;
+    font-size: 19px;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .an-close:hover {
+    color: var(--fg);
+    background: var(--tile);
+    border-color: var(--line);
+  }
+
+  @keyframes announce-in {
+    from {
+      transform: translateY(-100%);
+      opacity: 0.4;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .announce {
+      animation: none;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .announce-inner {
+      gap: 10px;
+      padding-right: 18px;
+    }
+    .an-cta {
+      width: 30px;
+      padding: 0;
+    }
+    .an-cta-label {
+      display: none;
+    }
+    .an-body {
+      font-size: 13.5px;
+      gap: 8px;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .announce-inner {
+      gap: 8px;
+    }
+    .an-tag {
+      padding: 0 10px;
+      font-size: 11.5px;
+      letter-spacing: 0.04em;
+    }
+    .an-body {
+      font-size: 13px;
+    }
+  }
+</style>

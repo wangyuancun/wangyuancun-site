@@ -1,6 +1,8 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
+import AnnounceBar from '../components/AnnounceBar.astro';
 import { SITE_TITLE, GITHUB, WECHAT, EMAIL } from '../consts';
+import { announcementKey, type Announcement } from '../data/announcements';
 import '../styles/global.css';
 
 interface Props {
@@ -17,6 +19,8 @@ interface Props {
   publishedTime?: Date;
   tags?: string[];
   noindex?: boolean;
+  /** 首页公告；只有首页传入，其他页面不显示 */
+  announcement?: Announcement;
 }
 
 const {
@@ -33,6 +37,7 @@ const {
   publishedTime,
   tags,
   noindex,
+  announcement,
 } = Astro.props;
 
 const isEn = lang === 'en';
@@ -68,6 +73,38 @@ const year = new Date().getFullYear();
         }
       })();
     </script>
+
+    {
+      announcement && (
+        <script
+          is:inline
+          define:vars={{
+            key: announcementKey(announcement),
+            start: announcement.start,
+            end: announcement.end,
+          }}
+        >
+          (function () {
+            var root = document.documentElement;
+            var off = false;
+            try {
+              off = Number(localStorage.getItem(key) || 0) > Date.now();
+            } catch (e) {}
+            if (!off) {
+              var d = new Date();
+              var today =
+                d.getFullYear() +
+                '-' +
+                String(d.getMonth() + 1).padStart(2, '0') +
+                '-' +
+                String(d.getDate()).padStart(2, '0');
+              off = today < start || today > end;
+            }
+            root.dataset.announce = off ? 'off' : 'on';
+          })();
+        </script>
+      )
+    }
   </head>
   <body>
     <a class="skip" href="#main">{isEn ? 'Skip to content' : '跳到正文'}</a>
@@ -102,6 +139,8 @@ const year = new Date().getFullYear();
         </button>
       </nav>
     </header>
+
+    {announcement && <AnnounceBar announcement={announcement} />}
 
     <main id="main" class={narrow ? 'narrow' : ''}>
       <slot />

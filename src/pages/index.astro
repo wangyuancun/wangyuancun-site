@@ -4,6 +4,7 @@ import PostCard from '../components/PostCard.astro';
 import ProductCard from '../components/ProductCard.astro';
 import { getCollection } from 'astro:content';
 import { getFeaturedPosts } from '../lib/blog';
+import { getActiveAnnouncement } from '../data/announcements';
 import {
   SITE_TITLE,
   SITE_DESCRIPTION,
@@ -20,6 +21,7 @@ import {
 const posts = await getFeaturedPosts(3);
 const products = (await getCollection('products')).sort((a, b) => a.data.order - b.data.order);
 const top = products.slice(0, 3);
+const announcement = getActiveAnnouncement();
 
 const schema = {
   '@context': 'https://schema.org',
@@ -38,6 +40,7 @@ const schema = {
   altEn="/en/"
   active="home"
   schema={schema}
+  announcement={announcement}
 >
   <div class="hero">
     <div class="avatar">
