@@ -8,6 +8,8 @@ cover: /images/blog/agentscope-spring-boot-autoconfig/cover.png
 titleEn: "How Spring Boot Wires an Agent: Inside AgentScope's Auto-Configuration"
 summaryEn: "Three annotations, five steps, one bean chain — what the starter actually does behind a few lines of application.yml."
 featured: false
+series: agentscope
+seriesOrder: 1
 ---
 
 ## 写一个 Agent 很容易，把 Agent 装进项目很难
