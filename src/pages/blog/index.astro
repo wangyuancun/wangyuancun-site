@@ -2,14 +2,20 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostCard from '../../components/PostCard.astro';
 import { getSortedPosts } from '../../lib/blog';
-import { seriesMeta } from '../../lib/series';
+import { SERIES, seriesMeta } from '../../lib/series';
 
 const posts = await getSortedPosts();
 
-// 顶部系列入口：只指向已确认的系列，且该系列确有已发布文章时才显示
-const seriesId = 'agentscope';
-const seriesName = seriesMeta(seriesId).name;
-const seriesCount = posts.filter((post) => post.data.series === seriesId).length;
+// 顶部系列横幅：按映射表顺序列出「已有已发布文章」的系列，篇数从文章聚合，不写死
+const counts = new Map<string, number>();
+for (const post of posts) {
+  const id = post.data.series;
+  if (id) counts.set(id, (counts.get(id) ?? 0) + 1);
+}
+const seriesBanners = [
+  ...Object.keys(SERIES).filter((id) => counts.has(id)),
+  ...[...counts.keys()].filter((id) => !(id in SERIES)),
+].map((id) => ({ id, ...seriesMeta(id), count: counts.get(id) as number }));
 ---
 
 <BaseLayout
@@ -18,14 +24,25 @@ const seriesCount = posts.filter((post) => post.data.series === seriesId).length
   active="blog"
 >
   {
-    seriesCount > 0 && (
-      <p class="series-entry">
-        <a href={`/blog/series/${seriesId}/`}>
-          <span class="lab">系列</span>
-          <span class="t">{seriesName}</span>
-          <span class="d">已发布 {seriesCount} 篇 →</span>
-        </a>
-      </p>
+    seriesBanners.length > 0 && (
+      <div class="series-banners">
+        {seriesBanners.map((s) => (
+          <a class="series-banner" href={`/blog/series/${s.id}/`}>
+            <div class="sb-main">
+              <div class="sb-kicker">SERIES · 连载</div>
+              <div class="sb-title">{s.name}</div>
+              {s.intro && <p class="sb-intro">{s.intro}</p>}
+              <div class="sb-progress">
+                <span class="dot" aria-hidden="true" />
+                已发布 {s.count} 篇
+              </div>
+            </div>
+            <span class="sb-cta">
+              查看系列 <em>→</em>
+            </span>
+          </a>
+        ))}
+      </div>
     )
   }
 
@@ -46,30 +63,110 @@ const seriesCount = posts.filter((post) => post.data.series === seriesId).length
 </BaseLayout>
 
 <style>
-  .series-entry { margin: 26px 0 0; }
-  .series-entry a {
-    display: inline-flex;
-    align-items: baseline;
-    gap: 10px;
+  /* 系列横幅：占满内容宽度的入口，可同时存在多个系列 */
+  .series-banners { display: grid; gap: 12px; margin: 28px 0 0; }
+
+  .series-banner {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px 24px;
     flex-wrap: wrap;
-    padding-left: 11px;
-    border-left: 2px solid var(--accent);
+    padding: 18px 22px 18px 24px;
+    background: var(--elev);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    color: inherit;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
+  }
+  .series-banner::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--accent);
+  }
+  .series-banner:hover {
+    border-color: var(--accent);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+  }
+
+  .sb-main { min-width: 0; max-width: 34em; }
+  .sb-kicker {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .sb-title {
+    font-family: var(--serif);
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 1.35;
+    letter-spacing: 0.2px;
+    color: var(--fg);
+    transition: color 0.15s ease;
+  }
+  .series-banner:hover .sb-title { color: var(--accent); }
+  .sb-intro {
+    margin: 5px 0 0;
     font-size: 13.5px;
     line-height: 1.7;
     color: var(--fg-muted);
   }
-  .series-entry .lab {
+  .sb-progress {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-top: 10px;
     font-family: var(--mono);
     font-size: 11px;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.06em;
     color: var(--fg-faint);
+    font-variant-numeric: tabular-nums;
   }
-  .series-entry .t {
-    font-family: var(--serif);
-    font-size: 14.5px;
-    font-weight: 700;
+  .sb-progress .dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    align-self: center;
+  }
+
+  .sb-cta {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-sm);
+    background: var(--bg);
+    font-size: 13.5px;
+    line-height: 1.5;
     color: var(--fg);
-    transition: color 0.15s ease;
+    white-space: nowrap;
+    transition: border-color 0.18s ease, color 0.18s ease;
   }
-  .series-entry a:hover .t { color: var(--accent); }
+  .sb-cta em { font-style: normal; color: var(--accent); }
+  .series-banner:hover .sb-cta { border-color: var(--accent); color: var(--accent); }
+
+  :global(html[data-theme='dark']) .series-banner:hover {
+    box-shadow: 0 6px 22px rgba(0, 0, 0, 0.3);
+  }
+
+  @media (max-width: 700px) {
+    .series-banner { padding: 16px 18px 16px 20px; }
+  }
+
+  @media (max-width: 560px) {
+    .series-banner { flex-direction: column; align-items: stretch; gap: 14px; }
+    .sb-main { max-width: none; }
+    .sb-cta { align-self: flex-start; }
+  }
 </style>
