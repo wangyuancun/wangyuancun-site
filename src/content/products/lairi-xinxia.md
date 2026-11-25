@@ -2,7 +2,7 @@
 name: 来日信匣
 summary: 写给自己、到点自动漂回的私密时间信匣。写下此刻想对未来说的话，选好开启的那一天封存；到了那天，信会由时间送回你手里。
 meta: HarmonyOS 应用 · 工具 · 免费 · v1.0.0
-status: 审核中
+status: 已发布
 order: 0
 nameEn: LaiRi XinXia
 summaryEn: A private, offline time capsule for HarmonyOS. Write a letter to your future self, seal it with a password, and let time bring it back on the day you choose.
@@ -47,4 +47,4 @@ shots:
 
 ## 状态
 
-2026-11-22 已提交华为应用市场审核，当前在预审阶段。上架后会更新为「已发布」并补上应用市场链接。源码为私有备份，不开源。
+2026-11-25 已在华为应用市场正式上架（版本 1.0.0，支持手机）。可在应用市场搜索「来日信匣」安装。源码为私有备份，不开源。
